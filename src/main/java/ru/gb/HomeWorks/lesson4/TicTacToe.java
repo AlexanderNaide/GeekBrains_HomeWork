@@ -36,7 +36,7 @@ public class TicTacToe {
             playRound();
 
             System.out.printf("СЧЕТ:          ЧЕЛОВЕК          КОМПЬЮТЕР\n" +
-                              "                  %d                %d\n", scoreHuman, scoreAi);
+                    "                  %d                 %d\n", scoreHuman, scoreAi);
             System.out.print("Хотите сыграть еще раз? (Y или N) >>>>>");
 
             if (!scanner.next().toLowerCase(Locale.ROOT).equals("y")){
@@ -187,65 +187,32 @@ public class TicTacToe {
     }
 
     private static boolean checkWin(char dot){
-
-//        //hor
-//        if (field[0][0] == dot && field[0][1] == dot && field[0][2] == dot) return true;
-//        if (field[1][0] == dot && field[1][1] == dot && field[1][2] == dot) return true;
-//        if (field[2][0] == dot && field[2][1] == dot && field[2][2] == dot) return true;
-//        //ver
-//        if (field[0][0] == dot && field[1][0] == dot && field[2][0] == dot) return true;
-//        if (field[0][1] == dot && field[1][1] == dot && field[2][1] == dot) return true;
-//        if (field[0][2] == dot && field[1][2] == dot && field[2][2] == dot) return true;
-//        //diagonal
-//        if (field[0][0] == dot && field[1][1] == dot && field[2][2] == dot) return true;
-//        if (field[0][2] == dot && field[1][1] == dot && field[2][0] == dot) return true;
-//
-//        else return false;
-
+        boolean result = false;
         for (int y = 0; y < fieldSizeY; y++) {
             for (int x = 0; x < fieldSizeX; x++) {
-                char n = field[y][x];
-                if (n == dot){
-                    int count = 1;
-                    for (int vert = y; vert < fieldSizeY; vert++) {
-                        if (field[vert][x] == dot){
-                            count++;
-                        }
+                if (field[y][x] == dot){
+                    if (checkingTheLine(y, x, 0, 1) ||
+                            checkingTheLine(y, x, 1, 0) ||
+                            checkingTheLine(y, x, 1, 1) ||
+                            checkingTheLine(y, x, 1, -1)) {
+                        result = true;
                     }
-                    if (count == winLength){
-                        return true;
-
-                    } else {
-                        count = 1;
-                    }
-                    for (int gor = x; gor < fieldSizeX; gor++) {
-                        if (field[y][gor] == dot){
-                            count++;
-                        }
-                    }
-                    if (count == winLength){
-                        return true;
-
-                    } else {
-                        count = 1;
-                    }
-
                 }
             }
         }
-        return false;
+        return result;
     }
 
     private static boolean checkingTheLine(int y, int x, int deltaY, int deltaX){
         int count = 0;
-        for (int i = y, j = x; i < fieldSizeY && j < fieldSizeX; i += deltaY, j += deltaX) {
+        for (int i = y, j = x; i < fieldSizeY && j < fieldSizeX && i >=0 && j >= 0; i += deltaY, j += deltaX) {
             if (field[i][j] == field[y][x]){
                 count++;
             } else {
                 break;
             }
         }
-        return count == winLength;
+        return count >= winLength;
     }
 
     private static boolean isCellValid(int y, int x){
