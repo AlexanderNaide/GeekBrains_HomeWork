@@ -3,6 +3,7 @@ package ru.gb.HomeWorks.lesson4;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -11,9 +12,7 @@ public class TicTacToe {
     private static final char DOT_O = 'O';
     private static final char DOT_EMPTY = '.';
 
-
     private static final Scanner scanner = new Scanner(System.in);
-//    private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static final Random random = new Random();
 
     private static char[][] field;
@@ -28,28 +27,52 @@ public class TicTacToe {
 
 
     public static void main(String[] args) throws IOException {
-        intField(3, 3);
-        printField();
-        humanTurn();
-        printField();
+        startNewGame();
     }
 
-    private static void humanTurn() throws IOException {
-        int x;
-        int y;
+    private static void startNewGame() throws IOException{
+        while(true) {
+            chooseDot();
+            playRound();
 
-        System.out.println("Введи координаты x & y  >>>>>");
+            System.out.printf("СЧЕТ:          ЧЕЛОВЕК          КОМПЬЮТЕР\n" +
+                              "                  %d                %d\n", scoreHuman, scoreAi);
+            System.out.print("Хотите сыграть еще раз? (Y или N) >>>>>");
 
-        x = scanner.nextInt()- 1;
-        y = scanner.nextInt()- 1;
-
-        field[x][y] = DOT_X;
-
+            if (!scanner.next().toLowerCase(Locale.ROOT).equals("y")){
+                System.out.println("Пока!");
+                break;
+            }
+        }
     }
 
-    private static void intField(int sizeX, int sizeY){
+    private static void chooseDot(){
+        System.out.println("Введи 'X' если хочешь играть крестиками или '0', если хочешь играть ноликами >>>>> ");
+
+        if (scanner.next().toLowerCase(Locale.ROOT).equals("x")){
+            dotHuman = DOT_X;
+            dotAi = DOT_O;
+        } else {
+            dotHuman = DOT_O;
+            dotAi = DOT_X;
+        }
+    }
+
+    private static void playRound() throws IOException{
+        System.out.printf("Раунд %d начался!\n", ++roundCounter);
+        initField(3, 3);
+        printField();
+        if (dotHuman == DOT_X) {
+            humanFirst();
+        } else {
+            aiFirst();
+        }
+    }
+
+    private static void initField(int sizeX, int sizeY){
         fieldSizeY = sizeY;
         fieldSizeX = sizeX;
+        winLength = sizeX;
         field = new char[fieldSizeY][fieldSizeX];
 
         for (int y = 0; y < fieldSizeY; y++) {
@@ -75,9 +98,158 @@ public class TicTacToe {
             }
             System.out.println();
         }
-        for (int i = 0; i < fieldSizeX * 2 + 1; i++) {
+        for (int i = 0; i < fieldSizeX * 2 + 2; i++) {
             System.out.print("_");
         }
         System.out.println();
     }
+
+    private static void humanFirst() throws IOException {
+        while (true){
+            humanTurn();
+            printField();
+            if (gameCheck(dotHuman)) {
+                break;
+            }
+            aiTurn();
+            printField();
+            if (gameCheck(dotAi)) {
+                break;
+            }
+        }
+    }
+
+    private static void aiFirst() throws IOException {
+        while (true){
+            aiTurn();
+            printField();
+            if (gameCheck(dotAi)) {
+                break;
+            }
+            humanTurn();
+            printField();
+            if (gameCheck(dotHuman)) {
+                break;
+            }
+        }
+    }
+
+    private static boolean gameCheck(char dot){
+        if (checkWin(dot) && dot == dotHuman) {
+            System.out.println("Человек победил!");
+            scoreHuman++;
+            return true;
+        } else if (checkWin(dot) && dot == dotAi) {
+            System.out.println("Компьютер победил!");
+            scoreAi++;
+            return true;
+        }
+        return checkDraw();
+    }
+
+    private static void aiTurn() throws IOException {
+        int x;
+        int y;
+
+        do {
+            x = random.nextInt(fieldSizeX);
+            y = random.nextInt(fieldSizeY);
+        }while (!isCellValid(y, x));
+
+        field[y][x] = dotAi;
+
+    }
+
+    private static void humanTurn() throws IOException {
+        int x;
+        int y;
+
+        do { System.out.println("Введи координаты x & y  >>>>>");
+
+            x = scanner.nextInt() - 1;
+            y = scanner.nextInt() - 1;
+        } while (!isCellValid(y, x));
+
+        field[y][x] = dotHuman;
+
+    }
+
+    private static boolean checkDraw(){
+        for (int y = 0; y < fieldSizeY; y++) {
+            for (int x = 0; x < fieldSizeX; x++) {
+                if (field[y][x] == DOT_EMPTY){
+                    return false;
+                }
+            }
+        }
+        System.out.println("Ничья!");
+        return true;
+    }
+
+    private static boolean checkWin(char dot){
+
+//        //hor
+//        if (field[0][0] == dot && field[0][1] == dot && field[0][2] == dot) return true;
+//        if (field[1][0] == dot && field[1][1] == dot && field[1][2] == dot) return true;
+//        if (field[2][0] == dot && field[2][1] == dot && field[2][2] == dot) return true;
+//        //ver
+//        if (field[0][0] == dot && field[1][0] == dot && field[2][0] == dot) return true;
+//        if (field[0][1] == dot && field[1][1] == dot && field[2][1] == dot) return true;
+//        if (field[0][2] == dot && field[1][2] == dot && field[2][2] == dot) return true;
+//        //diagonal
+//        if (field[0][0] == dot && field[1][1] == dot && field[2][2] == dot) return true;
+//        if (field[0][2] == dot && field[1][1] == dot && field[2][0] == dot) return true;
+//
+//        else return false;
+
+        for (int y = 0; y < fieldSizeY; y++) {
+            for (int x = 0; x < fieldSizeX; x++) {
+                char n = field[y][x];
+                if (n == dot){
+                    int count = 1;
+                    for (int vert = y; vert < fieldSizeY; vert++) {
+                        if (field[vert][x] == dot){
+                            count++;
+                        }
+                    }
+                    if (count == winLength){
+                        return true;
+
+                    } else {
+                        count = 1;
+                    }
+                    for (int gor = x; gor < fieldSizeX; gor++) {
+                        if (field[y][gor] == dot){
+                            count++;
+                        }
+                    }
+                    if (count == winLength){
+                        return true;
+
+                    } else {
+                        count = 1;
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkingTheLine(int y, int x, int deltaY, int deltaX){
+        int count = 0;
+        for (int i = y, j = x; i < fieldSizeY && j < fieldSizeX; i += deltaY, j += deltaX) {
+            if (field[i][j] == field[y][x]){
+                count++;
+            } else {
+                break;
+            }
+        }
+        return count == winLength;
+    }
+
+    private static boolean isCellValid(int y, int x){
+        return x >= 0 && y >= 0 && x < fieldSizeX && y < fieldSizeY && field[y][x] == DOT_EMPTY;
+    }
+
 }
