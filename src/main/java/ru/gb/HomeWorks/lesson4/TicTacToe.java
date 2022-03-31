@@ -1,6 +1,5 @@
 package ru.gb.HomeWorks.lesson4;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
@@ -48,8 +47,10 @@ public class TicTacToe {
             chooseDot();
             playRound();
 
-            System.out.printf("СЧЕТ:          ЧЕЛОВЕК          КОМПЬЮТЕР\n" +
-                    "                  %d                 %d\n", scoreHuman, scoreAi);
+            System.out.printf("""
+                    СЧЕТ:          ЧЕЛОВЕК          КОМПЬЮТЕР
+                                      %d                 %d
+                    """, scoreHuman, scoreAi);
             System.out.print("Хотите сыграть еще раз? (Y или N) >>>>>");
 
             if (!scanner.next().toLowerCase(Locale.ROOT).equals("y")){
