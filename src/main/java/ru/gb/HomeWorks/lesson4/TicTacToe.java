@@ -1,11 +1,25 @@
 package ru.gb.HomeWorks.lesson4;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
+
+/*********
+1. Упразднил fieldSizeX и fieldSizeY, вместо этого ввел один fieldSize для длинны и ширины, т.к. предпочтительнее создавать квадратное поле.
+2. Создал все условия, чтобы программа одинаково работала с любым размером поля и длинны цепочки,
+   в частности переписан метод checkWin (ну собственно это и нужно было в задании).
+3. В методе chooseDot добавил игроку возможность выбирать размер поля и длинну цепочки.
+4. В метод aiTurn реализовал две логики: во первых, добавил логику проверки "последнего выйгрышного хода" - если есть такое место, поставив в которое свою фишку компьютер выйграет -
+   компьютер его найдет и использует, во вторых, если такое место есть для человека - компьютер его найдет и помешает человеку выйграть.
+   Есть еще идеи по улучшению "хитрости" компьютера, например проверить свободна ли цепочка клеток в любом направлении, заполнив которую будет выйгрыш -
+   её и заполнять (в рандомное место, но внутри цепочки), пока человек не прервет её, либо не наступит выйгрыш, но на данный момент предпочту вовремя сдать ДЗ, чем копаться неделю с кодом)))
+5. Прочие мелкие изменения для организации взаимодействия всех методов.
+
+P.S.: Я плохо знаю английский, поэтому взаимодействие с игроком пишу на русском.
+
+*********/
 
 public class TicTacToe {
     private static final char DOT_X = 'X';
@@ -18,19 +32,18 @@ public class TicTacToe {
     private static char[][] field;
     private static char dotHuman;
     private static char dotAi;
-    private static int fieldSizeX;
-    private static int fieldSizeY;
+    private static int fieldSize;
     private static int scoreHuman;
     private static int scoreAi;
     private static int roundCounter;
     private static int winLength;
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         startNewGame();
     }
 
-    private static void startNewGame() throws IOException{
+    private static void startNewGame() {
         while(true) {
             chooseDot();
             playRound();
@@ -47,7 +60,24 @@ public class TicTacToe {
     }
 
     private static void chooseDot(){
-        System.out.println("Введи 'X' если хочешь играть крестиками или '0', если хочешь играть ноликами >>>>> ");
+        fieldSize = 0;
+        do {
+            System.out.println("Выберите размер поля, для этого введите число, соответствующее размеру стороны квадрата (предпочтительно от 3 до 9) >>>>>");
+            int a = scanner.nextInt();
+            if (a >= 3 && a <= 9) {
+                fieldSize = a;
+            }
+        }while (fieldSize == 0);
+        winLength = 0;
+        do {
+            System.out.println("Введите длинну выйгрышной цепочки >>>>>");
+            int b = scanner.nextInt();
+            if (b >= 2 && b <= fieldSize) {
+                winLength = b;
+            }
+        }while (winLength == 0);
+
+        System.out.println("Введи 'X' если хочешь играть крестиками или '0', если хочешь играть ноликами >>>>>");
 
         if (scanner.next().toLowerCase(Locale.ROOT).equals("x")){
             dotHuman = DOT_X;
@@ -58,9 +88,9 @@ public class TicTacToe {
         }
     }
 
-    private static void playRound() throws IOException{
+    private static void playRound() {
         System.out.printf("Раунд %d начался!\n", ++roundCounter);
-        initField(3, 3);
+        initField();
         printField();
         if (dotHuman == DOT_X) {
             humanFirst();
@@ -69,14 +99,11 @@ public class TicTacToe {
         }
     }
 
-    private static void initField(int sizeX, int sizeY){
-        fieldSizeY = sizeY;
-        fieldSizeX = sizeX;
-        winLength = sizeX;
-        field = new char[fieldSizeY][fieldSizeX];
+    private static void initField(){
+        field = new char[fieldSize][fieldSize];
 
-        for (int y = 0; y < fieldSizeY; y++) {
-            for (int x = 0; x < fieldSizeX; x++) {
+        for (int y = 0; y < fieldSize; y++) {
+            for (int x = 0; x < fieldSize; x++) {
                 field[y][x] = DOT_EMPTY;
             }
         }
@@ -85,26 +112,26 @@ public class TicTacToe {
     private static void printField(){
         System.out.print("+");
 
-        for (int i = 0; i < fieldSizeX * 2 + 1; i++) {
+        for (int i = 0; i < fieldSize * 2 + 1; i++) {
             System.out.print(i % 2 == 0 ? "-" : i / 2 + 1);
         }
 
         System.out.println();
-        for (int i = 0; i < fieldSizeY; i++) {
+        for (int i = 0; i < fieldSize; i++) {
             System.out.print(i + 1 + "|");
 
-            for (int j = 0; j < fieldSizeX; j++) {
+            for (int j = 0; j < fieldSize; j++) {
                 System.out.print(field[i][j] + "|");
             }
             System.out.println();
         }
-        for (int i = 0; i < fieldSizeX * 2 + 2; i++) {
+        for (int i = 0; i < fieldSize * 2 + 2; i++) {
             System.out.print("_");
         }
         System.out.println();
     }
 
-    private static void humanFirst() throws IOException {
+    private static void humanFirst() {
         while (true){
             humanTurn();
             printField();
@@ -119,7 +146,7 @@ public class TicTacToe {
         }
     }
 
-    private static void aiFirst() throws IOException {
+    private static void aiFirst() {
         while (true){
             aiTurn();
             printField();
@@ -135,11 +162,11 @@ public class TicTacToe {
     }
 
     private static boolean gameCheck(char dot){
-        if (checkWin(dot) && dot == dotHuman) {
+        if (checkWin(dot, field) && dot == dotHuman) {
             System.out.println("Человек победил!");
             scoreHuman++;
             return true;
-        } else if (checkWin(dot) && dot == dotAi) {
+        } else if (checkWin(dot, field) && dot == dotAi) {
             System.out.println("Компьютер победил!");
             scoreAi++;
             return true;
@@ -147,20 +174,61 @@ public class TicTacToe {
         return checkDraw();
     }
 
-    private static void aiTurn() throws IOException {
-        int x;
-        int y;
+    private static void aiTurn() {
+        int x = 0;
+        int y = 0;
+        char[][] fieldTask = new char[fieldSize][fieldSize];
+        for (int i = 0; i < field.length; i++) {
+            fieldTask[i] = Arrays.copyOf(field[i], field[1].length);
+        }
 
-        do {
-            x = random.nextInt(fieldSizeX);
-            y = random.nextInt(fieldSizeY);
-        }while (!isCellValid(y, x));
+        boolean b = false;
 
+        for (int i = 0; i < fieldSize && !b; i++) {
+            for (int j = 0; j < fieldSize; j++) {
+                if (fieldTask[i][j] == DOT_EMPTY){
+                    fieldTask[i][j] = dotAi;
+                    if (checkWin(dotAi, fieldTask)){
+                        x = j;
+                        y = i;
+                        b = true;
+                        break;
+                    } else {
+                        fieldTask[i][j] = DOT_EMPTY;
+                    }
+                }
+            }
+        }
+
+        if (!b ){
+            for (int i = 0; i < fieldSize && !b; i++) {
+                for (int j = 0; j < fieldSize; j++) {
+                    if (fieldTask[i][j] == DOT_EMPTY){
+                        fieldTask[i][j] = dotHuman;
+                        if (checkWin(dotHuman, fieldTask)){
+                            x = j;
+                            y = i;
+                            b = true;
+                            break;
+                        } else {
+                            fieldTask[i][j] = DOT_EMPTY;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!b ){
+            do {
+                x = random.nextInt(fieldSize);
+                y = random.nextInt(fieldSize);
+            }while (!isCellValid(y, x));
+        }
         field[y][x] = dotAi;
 
     }
 
-    private static void humanTurn() throws IOException {
+    private static void humanTurn() {
         int x;
         int y;
 
@@ -175,8 +243,8 @@ public class TicTacToe {
     }
 
     private static boolean checkDraw(){
-        for (int y = 0; y < fieldSizeY; y++) {
-            for (int x = 0; x < fieldSizeX; x++) {
+        for (int y = 0; y < fieldSize; y++) {
+            for (int x = 0; x < fieldSize; x++) {
                 if (field[y][x] == DOT_EMPTY){
                     return false;
                 }
@@ -186,15 +254,15 @@ public class TicTacToe {
         return true;
     }
 
-    private static boolean checkWin(char dot){
+    private static boolean checkWin(char dot, char[][] checkField){
         boolean result = false;
-        for (int y = 0; y < fieldSizeY; y++) {
-            for (int x = 0; x < fieldSizeX; x++) {
-                if (field[y][x] == dot){
-                    if (checkingTheLine(y, x, 0, 1) ||
-                            checkingTheLine(y, x, 1, 0) ||
-                            checkingTheLine(y, x, 1, 1) ||
-                            checkingTheLine(y, x, 1, -1)) {
+        for (int y = 0; y < fieldSize; y++) {
+            for (int x = 0; x < fieldSize; x++) {
+                if (checkField[y][x] == dot){
+                    if (checkingTheLine(y, x, 0, 1, checkField) ||
+                            checkingTheLine(y, x, 1, 0, checkField) ||
+                            checkingTheLine(y, x, 1, 1, checkField) ||
+                            checkingTheLine(y, x, 1, -1, checkField)) {
                         result = true;
                     }
                 }
@@ -203,10 +271,10 @@ public class TicTacToe {
         return result;
     }
 
-    private static boolean checkingTheLine(int y, int x, int deltaY, int deltaX){
+    private static boolean checkingTheLine(int y, int x, int deltaY, int deltaX, char[][] checkField){
         int count = 0;
-        for (int i = y, j = x; i < fieldSizeY && j < fieldSizeX && i >=0 && j >= 0; i += deltaY, j += deltaX) {
-            if (field[i][j] == field[y][x]){
+        for (int i = y, j = x; i < fieldSize && j < fieldSize && i >=0 && j >= 0; i += deltaY, j += deltaX) {
+            if (checkField[i][j] == checkField[y][x]){
                 count++;
             } else {
                 break;
@@ -216,7 +284,7 @@ public class TicTacToe {
     }
 
     private static boolean isCellValid(int y, int x){
-        return x >= 0 && y >= 0 && x < fieldSizeX && y < fieldSizeY && field[y][x] == DOT_EMPTY;
+        return x >= 0 && y >= 0 && x < fieldSize && y < fieldSize && field[y][x] == DOT_EMPTY;
     }
 
 }
