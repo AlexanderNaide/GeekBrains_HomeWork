@@ -2,10 +2,12 @@ package ru.gb.HomeWorks.lesson6;
 
 public class Cat extends Animal{
 
+    protected static int count;
     private final int limitRun = 200;
 
     public Cat(String name){
         this.name = name;
+        count++;
     }
 
     public void run(int meter){

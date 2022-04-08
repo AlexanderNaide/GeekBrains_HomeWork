@@ -19,7 +19,7 @@ public class HomeWorkApp {
         sharik.run(600);
         sharik.swing(20);
 
-        System.out.println("Итого создано животных: " + Animal.count);
+        System.out.println("Итого создано животных: " + Animal.count + ", из них собак: " + Dog.count + " и котов: " + Cat.count);
 
     }
 }

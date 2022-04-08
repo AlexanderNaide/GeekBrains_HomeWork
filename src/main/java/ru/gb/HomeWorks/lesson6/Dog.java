@@ -4,9 +4,11 @@ public class Dog extends Animal{
 
     protected final int limitRun = 500;
     protected final int limitSwing = 10;
+    protected static int count;
 
     public Dog(String name){
         this.name = name;
+        count++;
     }
 
     public void run(int meter){
