@@ -47,23 +47,17 @@ public class HomeWorkApp {
 
             add(bar, BorderLayout.NORTH);
 
-            exitItem.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+            exitItem.addActionListener((e) -> {
                     System.exit(1);
-                }
             });
 
             JLabel label = new JLabel("Press the button");
             label.setFont(new Font("Times new Roman", Font.BOLD, 50));
             add(label);
 
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    counter++;
-                    label.setText("COUNTER: " + counter) ;
-                }
+            button.addActionListener((e) -> {
+                counter++;
+                label.setText("COUNTER: " + counter) ;
             });
 
             button2.addActionListener((e) -> {
@@ -72,8 +66,8 @@ public class HomeWorkApp {
             });
 
 
-
             setVisible(true);
+
         }
     }
 }
