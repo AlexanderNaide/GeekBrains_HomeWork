@@ -19,7 +19,7 @@ public class GameWindow  extends JFrame{
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2));
         buttonPanel.add(buttonStart);
-        buttonExit.add(buttonExit);
+        buttonPanel.add(buttonExit);
         add(buttonPanel, BorderLayout.SOUTH);
         gameMap = new GameMap();
         SettingsWindow settings = new SettingsWindow(this);
@@ -27,13 +27,11 @@ public class GameWindow  extends JFrame{
         setVisible(true);
         buttonStart.addActionListener(e -> settings.setVisible(true));
         buttonExit.addActionListener(e -> System.exit(0));
-
-        public void startGame(int gameMode, int fieldSize, int winLength){
-            gameMap.startNewGame(gameMode, fieldSize, winLength);
-            System.out.printf("Mode: %d, Size: %d length: %d\n", gameMode, fieldSize, winLength);
-        }
         setVisible(true);
+    }
 
-
+    public void startGame(int gameMode, int fieldSize, int winLength){
+        gameMap.startNewGame(gameMode, fieldSize, winLength);
+        System.out.printf("Mode: %d, Size: %d length: %d\n", gameMode, fieldSize, winLength);
     }
 }

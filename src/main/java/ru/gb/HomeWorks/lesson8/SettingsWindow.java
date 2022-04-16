@@ -56,8 +56,6 @@ public class SettingsWindow extends JFrame {
         add(labelWinLength);
         add(winLengthSlider);
 
-
-
     }
 
     private void addGameMode(){
@@ -73,9 +71,15 @@ public class SettingsWindow extends JFrame {
 
     private void submitSettings(GameWindow gameWindow){
         int gameMode;
-        /******************
-         * 2:06:28
-         */
+        if (humanVsAi.isSelected()){
+            gameMode = GameMap.MODE_VS_AI;
+        } else {
+            gameMode = GameMap.MODE_VS_HUMAN;
+        }
+        int fieldSize = fieldSizeSlider.getValue();
+        int winLength = winLengthSlider.getValue();
+        gameWindow.startGame(gameMode, fieldSize, winLength);
+
     }
 
 }
