@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameWindow  extends JFrame{
-    private static final int WINDOW_WIDTH = 640;
+    private static final int WINDOW_WIDTH = 480;
     private static final int WINDOW_HEIGHT = 480;
     private GameMap gameMap;
 

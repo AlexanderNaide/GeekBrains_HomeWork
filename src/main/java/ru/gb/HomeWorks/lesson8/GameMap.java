@@ -2,7 +2,9 @@ package ru.gb.HomeWorks.lesson8;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Random;
 
 public class GameMap extends JPanel {
@@ -30,15 +32,44 @@ public class GameMap extends JPanel {
     private int playerNumTurn;
 
     public GameMap(){
-
+        isInitialized = false;
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                update(e);
+            }
+        });
     }
 
     private void update(MouseEvent e){
+        if (isGameOver || !isInitialized){
+            return;
+        }
+        if (!playerTurn(e)){
+            return;
+        }
+        if (gameCheck(DOT_HUMAN, STATE_WIN_HUMAN)){
+            return;
+        }
+        aiTurn();
+        repaint();
 
+        if (gameCheck(DOT_AI, STATE_WIN_AI)){
+            return;
+        }
     }
 
     private boolean playerTurn(MouseEvent event){
-        return false;
+        int cellX = event.getX() / cellWidth;
+        int cellY = event.getY() / cellHeight;
+
+        if(!isCellValid(cellY, cellX) || !isCellEmpty(cellY, cellX)){
+            return false;
+        }
+        field[cellY][cellX] = DOT_HUMAN;
+        repaint();
+        return true;
     }
 
     @Override
@@ -54,12 +85,42 @@ public class GameMap extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-/********
- *
- *          2:26:32
- *
- * *******/
+        cellHeight = height / fieldSizeY;
+        cellWidth = width / fieldSizeX;
+        g.setColor(Color.BLACK);
 
+        for (int i = 0; i < fieldSizeY; i++) {
+            int y = i * cellHeight;
+            g.drawLine(0, y, width, y);
+        }
+        for (int i = 0; i < fieldSizeX; i++) {
+            int x = i * cellWidth;
+            g.drawLine(x, 0, x, height);
+        }
+
+        for (int y = 0; y < fieldSizeY; y++) {
+            for (int x = 0; x < fieldSizeX; x++) {
+                if (isCellEmpty(y, x)){
+                    continue;
+                }
+                if (field[y][x] == DOT_HUMAN){
+                    g.setColor(Color.blue);
+                    g.fillOval(x * cellWidth + DOT_PADDING,
+                            y * cellHeight + DOT_PADDING,
+                            cellWidth - DOT_PADDING * 2,
+                            cellHeight - DOT_PADDING * 2);
+                } else {
+                    g.setColor(Color.magenta);
+                    g.fillRect(x * cellWidth + DOT_PADDING,
+                            y * cellHeight + DOT_PADDING,
+                            cellWidth - DOT_PADDING * 2,
+                            cellHeight - DOT_PADDING * 2);
+                }
+            }
+        }
+        if (isGameOver){
+            showGameOverMessage(g);
+        }
 
     }
 

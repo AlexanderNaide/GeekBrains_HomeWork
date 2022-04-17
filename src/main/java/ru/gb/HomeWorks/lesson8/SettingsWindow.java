@@ -79,6 +79,7 @@ public class SettingsWindow extends JFrame {
         int fieldSize = fieldSizeSlider.getValue();
         int winLength = winLengthSlider.getValue();
         gameWindow.startGame(gameMode, fieldSize, winLength);
+        setVisible(false);
 
     }
 
