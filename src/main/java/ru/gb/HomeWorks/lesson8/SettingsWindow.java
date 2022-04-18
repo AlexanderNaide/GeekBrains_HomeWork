@@ -9,8 +9,8 @@ public class SettingsWindow extends JFrame {
     private static final int MIN_WIN_LENGTH = 3;
     private static final int MIN_FIELD_SIZE = 3;
     private static final int MAX_FIELD_SIZE = 10;
-    private static final String FIELD_SIZE_PREFIX = "Field size: ";
-    private static final String WIN_LENGTH_PREFIX = "Win length: ";
+    private static final String FIELD_SIZE_PREFIX = "Размер поля: ";
+    private static final String WIN_LENGTH_PREFIX = "Длинна выйгрышной цепочки: ";
 
     private JRadioButton humanVsAi;
     private JRadioButton humanVsHuman;
@@ -37,7 +37,9 @@ public class SettingsWindow extends JFrame {
         JLabel labelFieldSize = new JLabel(FIELD_SIZE_PREFIX + MIN_FIELD_SIZE);
         JLabel labelWinLength = new JLabel(WIN_LENGTH_PREFIX + MIN_WIN_LENGTH);
         fieldSizeSlider = new JSlider(MIN_FIELD_SIZE, MAX_FIELD_SIZE, MIN_FIELD_SIZE);
-        winLengthSlider = new JSlider(MIN_WIN_LENGTH, MAX_FIELD_SIZE, MIN_WIN_LENGTH);
+        winLengthSlider = new JSlider(MIN_WIN_LENGTH, MIN_FIELD_SIZE, MIN_WIN_LENGTH);//тут исправил микробаг:
+        // поменял MAX_FIELD_SIZE на MIN_FIELD_SIZE, иначе получалось, что в окне настроек если к слайдеру fieldSize не прикосаешься ,
+        // то значение размера выйгрыша можно выбирать до 10, которое в игре никогда не будет достигнуто
 
         fieldSizeSlider.addChangeListener(e -> {
             int current = fieldSizeSlider.getValue();
@@ -49,19 +51,20 @@ public class SettingsWindow extends JFrame {
             labelWinLength.setText(WIN_LENGTH_PREFIX + winLengthSlider.getValue())
         );
 
-        add(new JLabel("Choose field size"));
+        add(new JLabel("<html><body><i>Выбор размера поля</i></body></html>"));
+
         add(labelFieldSize);
         add(fieldSizeSlider);
-        add(new JLabel("Choose win length"));
+        add(new JLabel("<html><body><i>Выбор длинны выйгрыша</i></body></html>"));
         add(labelWinLength);
         add(winLengthSlider);
 
     }
 
     private void addGameMode(){
-        add(new JLabel("Choose game mode"));
-        humanVsAi = new JRadioButton("Human vs Ai", true);
-        humanVsHuman = new JRadioButton("Human vs human");
+        add(new JLabel("<html><body><i>Выбор режима игры</i></body></html>"));
+        humanVsAi = new JRadioButton("Человек против компьютера", true);
+        humanVsHuman = new JRadioButton("Человек против Человека");
         ButtonGroup group = new ButtonGroup();
         group.add(humanVsAi);
         group.add(humanVsHuman);

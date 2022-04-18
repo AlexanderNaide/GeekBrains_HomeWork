@@ -14,8 +14,8 @@ public class GameWindow  extends JFrame{
         setLocationRelativeTo(null);
         setTitle("Крестики - Нолики");
         setResizable(false);
-        JButton buttonStart = new JButton("<html><body><b>START</b></body></html>");
-        JButton buttonExit = new JButton("EXIT");
+        JButton buttonStart = new JButton("<html><body><b>Новая игра</b></body></html>");
+        JButton buttonExit = new JButton("Выход");
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2));
         buttonPanel.add(buttonStart);
@@ -24,7 +24,6 @@ public class GameWindow  extends JFrame{
         gameMap = new GameMap();
         SettingsWindow settings = new SettingsWindow(this);
         add(gameMap, BorderLayout.CENTER);
-        setVisible(true);
         buttonStart.addActionListener(e -> settings.setVisible(true));
         buttonExit.addActionListener(e -> System.exit(0));
         setVisible(true);

@@ -4,25 +4,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.Arrays;
 import java.util.Random;
 
 public class GameMap extends JPanel {
     public static final int MODE_VS_AI = 0;
     public static final int MODE_VS_HUMAN = 1;
-    private static final int DOT_HUMAN = 1;
-    private static final int DOT_AI = 2;
+    private static final int DOT_PLAYER1 = 1;
+    private static final int DOT_PLAYER2 = 2;
     private static final int DOT_EMPTY = 0;
     private static final int DOT_PADDING = 7;
     private static final int STATE_DRAW = 0;
-    private static final int STATE_WIN_HUMAN = 1;
-    private static final int STATE_WIN_AI = 2;
+    private static final int STATE_WIN_PLAYER1 = 1;
+    private static final int STATE_WIN_PLAYER2 = 2;
 
     public static final Random random = new Random();
     private int stateGameOver;
     private int[][] field;
-    private int fieldSizeX;
-    private int fieldSizeY;
+    private int fieldSize;
     private int winLength;
     private int cellWidth;
     private int cellHeight;
@@ -30,6 +29,9 @@ public class GameMap extends JPanel {
     private boolean isInitialized;
     private int gameMode;
     private int playerNumTurn;
+
+    private int scorePlayer1 = 0;
+    private int scorePlayer2 = 0;
 
     public GameMap(){
         isInitialized = false;
@@ -42,34 +44,67 @@ public class GameMap extends JPanel {
         });
     }
 
-    private void update(MouseEvent e){
-        if (isGameOver || !isInitialized){
-            return;
-        }
-        if (!playerTurn(e)){
-            return;
-        }
-        if (gameCheck(DOT_HUMAN, STATE_WIN_HUMAN)){
-            return;
-        }
-        aiTurn();
+    public void startNewGame(int gameMode, int fieldSize, int winLength) {
+        this.gameMode = gameMode;
+        this.fieldSize = fieldSize;
+        this.winLength = winLength;
+        field = new int[fieldSize][fieldSize];
+        isGameOver = false;
+        isInitialized = true;
+        playerNumTurn = 1;
         repaint();
+    }
 
-        if (gameCheck(DOT_AI, STATE_WIN_AI)){
-            return;
+    private void update(MouseEvent e){
+        if (gameMode == 0){
+
+            if (isGameOver || !isInitialized){
+                return;
+            }
+            if (playerTurn(e)){
+                return;
+            }
+            if (gameCheck()){
+                return;
+            }
+            aiTurn();
+            repaint();
+            gameCheck();
+
+        } else {
+            if (isGameOver || !isInitialized){
+                return;
+            }
+            if (playerTurn(e)){
+                return;
+            }
+            gameCheck();
         }
     }
 
-    private boolean playerTurn(MouseEvent event){
-        int cellX = event.getX() / cellWidth;
-        int cellY = event.getY() / cellHeight;
-
-        if(!isCellValid(cellY, cellX) || !isCellEmpty(cellY, cellX)){
-            return false;
+    private int dotPlayer (){
+        if (playerNumTurn % 2 == 0) {
+            return 1;
+        } else {
+            return 2;
         }
-        field[cellY][cellX] = DOT_HUMAN;
+    }
+
+    private boolean playerTurn(MouseEvent e){
+        int cellX = e.getX() / cellWidth;
+        int cellY = e.getY() / cellHeight;
+
+        if(isCellValid(cellY, cellX) || !isCellEmpty(cellY, cellX)){
+            return true;
+        }
+        if (playerNumTurn % 2 == 1) {
+            field[cellY][cellX] = DOT_PLAYER1;
+        } else {
+            field[cellY][cellX] = DOT_PLAYER2;
+        }
+        playerNumTurn++;
         repaint();
-        return true;
+        return false;
     }
 
     @Override
@@ -85,25 +120,25 @@ public class GameMap extends JPanel {
         int width = getWidth();
         int height = getHeight();
 
-        cellHeight = height / fieldSizeY;
-        cellWidth = width / fieldSizeX;
+        cellHeight = height / fieldSize;
+        cellWidth = width / fieldSize;
         g.setColor(Color.BLACK);
 
-        for (int i = 0; i < fieldSizeY; i++) {
+        for (int i = 0; i < fieldSize; i++) {
             int y = i * cellHeight;
             g.drawLine(0, y, width, y);
         }
-        for (int i = 0; i < fieldSizeX; i++) {
+        for (int i = 0; i < fieldSize; i++) {
             int x = i * cellWidth;
             g.drawLine(x, 0, x, height);
         }
 
-        for (int y = 0; y < fieldSizeY; y++) {
-            for (int x = 0; x < fieldSizeX; x++) {
+        for (int y = 0; y < fieldSize; y++) {
+            for (int x = 0; x < fieldSize; x++) {
                 if (isCellEmpty(y, x)){
                     continue;
                 }
-                if (field[y][x] == DOT_HUMAN){
+                if (field[y][x] == DOT_PLAYER1){
                     g.setColor(Color.blue);
                     g.fillOval(x * cellWidth + DOT_PADDING,
                             y * cellHeight + DOT_PADDING,
@@ -124,120 +159,146 @@ public class GameMap extends JPanel {
 
     }
 
-    public void startNewGame(int gameMode, int fieldSize, int winLength) {
-        this.gameMode = gameMode;
-        fieldSizeX = fieldSize;
-        fieldSizeY = fieldSize;
-        this.winLength = winLength;
-        field = new int[fieldSizeY][fieldSizeX];
-        isGameOver = false;
-        isInitialized = true;
-        repaint();
-    }
-
     private void showGameOverMessage(Graphics g) {
         g.setColor(Color.GRAY);
         g.fillRect(0, getHeight() / 2 - 55, getWidth(), 110);
         g.setColor(Color.YELLOW);
-        g.setFont(new Font("Times New Roman", Font.BOLD, 55));
+        g.setFont(new Font("Times New Roman", Font.BOLD, 32));
 
         switch (stateGameOver) {
-            case STATE_DRAW -> g.drawString("НИЧЬЯ!!!", getWidth() / 4, getHeight() / 2);
-            case STATE_WIN_HUMAN -> g.drawString("ПОБЕДИЛ ЧЕЛОВЕК", getWidth() / 4, getHeight() / 2);
-            case STATE_WIN_AI -> g.drawString("ПОБЕДИЛ КОМПЬЮТЕР", getWidth() / 4, getHeight() / 2);
+            case STATE_DRAW -> g.drawString("НИЧЬЯ!!!", getWidth() / 3, getHeight()/2 + 10);
+            case STATE_WIN_PLAYER1 -> {
+                if (gameMode == 0){
+                    g.drawString("ПОБЕДИЛ ЧЕЛОВЕК", 60, getHeight() / 2 + 10);
+                } else {
+                    g.drawString("ПОБЕДИЛ ИГРОК 1", 60, getHeight() / 2 + 10);
+                }
+            }
+            case STATE_WIN_PLAYER2 -> {
+                if (gameMode == 0){
+                    g.drawString("ПОБЕДИЛ КОМПЬЮТЕР", 60, getHeight() / 2 + 10);
+                } else {
+                    g.drawString("ПОБЕДИЛ ИГРОК 2", 60, getHeight() / 2 + 10);
+                }
+            }
         }
     }
 
-
-    private boolean gameCheck(int dot, int stateGameOver) {
-        if (checkWin(dot, winLength)) {
-            this.stateGameOver = stateGameOver;
+    private boolean gameCheck(){
+        int dot = dotPlayer();
+        if (checkWin(dot, field) && dot == DOT_PLAYER1) {
+            scorePlayer1++;
+            this.stateGameOver = STATE_WIN_PLAYER1;
+            isGameOver = true;
+            repaint();
+            return true;
+        } else if (checkWin(dot, field) && dot == DOT_PLAYER2) {
+            scorePlayer2++;
+            this.stateGameOver = STATE_WIN_PLAYER2;
             isGameOver = true;
             repaint();
             return true;
         }
-        if (checkDraw()) {
-            this.stateGameOver = STATE_DRAW;
-            isGameOver = true;
-            repaint();
-            return true;
-        }
-
-        return false;
+        return checkDraw();
     }
 
     private boolean checkDraw() {
-        for (int y = 0; y < fieldSizeY; y++) {
-            for (int x = 0; x < fieldSizeX; x++) {
+        for (int y = 0; y < fieldSize; y++) {
+            for (int x = 0; x < fieldSize; x++) {
                 if (isCellEmpty(y, x)) return false;
             }
         }
+        this.stateGameOver = STATE_DRAW;
+        isGameOver = true;
+        repaint();
         return true;
     }
 
     private void aiTurn() {
-        if (scanField(DOT_AI, winLength)) return;        // проверка выигрыша компа
-        if (scanField(DOT_HUMAN, winLength)) return;    // проверка выигрыша игрока на след ходу
-        if (scanField(DOT_AI, winLength - 1)) return;
-        if (scanField(DOT_HUMAN, winLength - 1)) return;
-        if (scanField(DOT_AI, winLength - 2)) return;
-        if (scanField(DOT_HUMAN, winLength - 2)) return;
-        aiTurnEasy();
-    }
 
-    private void aiTurnEasy() {
-        int x, y;
-        do {
-            x = random.nextInt(fieldSizeX);
-            y = random.nextInt(fieldSizeY);
-        } while (!isCellEmpty(x, y));
-        field[y][x] = DOT_AI;
-    }
-
-    private boolean scanField(int dot, int length) {
-        for (int y = 0; y < fieldSizeY; y++) {
-            for (int x = 0; x < fieldSizeX; x++) {
-                if (isCellEmpty(y, x)) {                // поставим фишку в каждую клетку поля по очереди
-                    field[y][x] = dot;
-                    if (checkWin(dot, length)) {
-                        if (dot == DOT_AI) return true;    // если комп выигрывает, то оставляем
-                        if (dot == DOT_HUMAN) {
-                            field[y][x] = DOT_AI;            // Если выигрывает игрок ставим туда 0
-                            return true;
-                        }
+        int x = 0;
+        int y = 0;
+        int[][] fieldTask = new int[fieldSize][fieldSize];
+        for (int i = 0; i < field.length; i++) {
+            fieldTask[i] = Arrays.copyOf(field[i], field[1].length);
+        }
+        boolean b = false;
+        for (int i = 0; i < fieldSize && !b; i++) {
+            for (int j = 0; j < fieldSize; j++) {
+                if (fieldTask[i][j] == DOT_EMPTY){
+                    fieldTask[i][j] = DOT_PLAYER2;
+                    if (checkWin(DOT_PLAYER2, fieldTask)){
+                        x = j;
+                        y = i;
+                        b = true;
+                        break;
+                    } else {
+                        fieldTask[i][j] = DOT_EMPTY;
                     }
-                    field[y][x] = DOT_EMPTY;            // если никто ничего, то возвращаем как было
                 }
             }
         }
-        return false;
-    }
 
-    private boolean checkWin(int dot, int length) {
-        for (int y = 0; y < fieldSizeY; y++) {            // проверяем всё поле
-            for (int x = 0; x < fieldSizeX; x++) {
-                if (checkLine(x, y, 1, 0, length, dot)) return true;    // проверка  по +х
-                if (checkLine(x, y, 1, 1, length, dot)) return true;    // проверка по диагонали +х +у
-                if (checkLine(x, y, 0, 1, length, dot)) return true;    // проверка линию по +у
-                if (checkLine(x, y, 1, -1, length, dot)) return true;    // проверка по диагонали +х -у
+        if (!b ){
+            for (int i = 0; i < fieldSize && !b; i++) {
+                for (int j = 0; j < fieldSize; j++) {
+                    if (fieldTask[i][j] == DOT_EMPTY){
+                        fieldTask[i][j] = DOT_PLAYER1;
+                        if (checkWin(DOT_PLAYER1, fieldTask)){
+                            x = j;
+                            y = i;
+                            b = true;
+                            break;
+                        } else {
+                            fieldTask[i][j] = DOT_EMPTY;
+                        }
+                    }
+                }
             }
         }
-        return false;
+
+        if (!b ){
+            do {
+                x = random.nextInt(fieldSize);
+                y = random.nextInt(fieldSize);
+            }while (isCellValid(y, x));
+        }
+        playerNumTurn++;
+        field[y][x] = DOT_PLAYER2;
+        repaint();
     }
 
-    // проверка линии
-    private boolean checkLine(int x, int y, int incrementX, int incrementY, int len, int dot) {
-        int endXLine = x + (len - 1) * incrementX;            // конец линии по Х
-        int endYLine = y + (len - 1) * incrementY;            // конец по У
-        if (!isCellValid(endYLine, endXLine)) return false;    // Выход линии за пределы
-        for (int i = 0; i < len; i++) {                    // идем по линии
-            if (field[y + i * incrementY][x + i * incrementX] != dot) return false;    // символы одинаковые?
+    private boolean checkWin(int dot, int[][] checkField){
+        boolean result = false;
+        for (int y = 0; y < fieldSize; y++) {
+            for (int x = 0; x < fieldSize; x++) {
+                if (checkField[y][x] == dot){
+                    if (checkingTheLine(y, x, 0, 1, checkField) ||
+                            checkingTheLine(y, x, 1, 0, checkField) ||
+                            checkingTheLine(y, x, 1, 1, checkField) ||
+                            checkingTheLine(y, x, 1, -1, checkField)) {
+                        result = true;
+                    }
+                }
+            }
         }
-        return true;
+        return result;
+    }
+
+    private boolean checkingTheLine(int y, int x, int deltaY, int deltaX, int[][] checkField){
+        int count = 0;
+        for (int i = y, j = x; i < fieldSize && j < fieldSize && i >=0 && j >= 0; i += deltaY, j += deltaX) {
+            if (checkField[i][j] == checkField[y][x]){
+                count++;
+            } else {
+                break;
+            }
+        }
+        return count >= winLength;
     }
 
     private boolean isCellValid(int y, int x){
-        return x>= 0 && y >= 0 && x < fieldSizeX && y < fieldSizeY;
+        return x < 0 || y < 0 || x >= fieldSize || y >= fieldSize || field[y][x] != DOT_EMPTY;
     }
 
     private boolean isCellEmpty(int y, int x){
