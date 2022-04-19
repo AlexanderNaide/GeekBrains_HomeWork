@@ -21,6 +21,7 @@ public class GameMap extends JPanel {
     public static final Random random = new Random();
     private int stateGameOver;
     private int[][] field;
+    private Stone[][] sField;
     private int fieldSize;
     private int winLength;
     private int cellWidth;
@@ -49,6 +50,7 @@ public class GameMap extends JPanel {
         this.fieldSize = fieldSize;
         this.winLength = winLength;
         field = new int[fieldSize][fieldSize];
+        sField = new Stone[fieldSize][fieldSize];
         isGameOver = false;
         isInitialized = true;
         playerNumTurn = 1;
@@ -99,8 +101,11 @@ public class GameMap extends JPanel {
         }
         if (playerNumTurn % 2 == 1) {
             field[cellY][cellX] = DOT_PLAYER1;
+            sField[cellY][cellX] = new Stone(playerNumTurn);
+
         } else {
             field[cellY][cellX] = DOT_PLAYER2;
+            sField[cellY][cellX] = new Stone(playerNumTurn);
         }
         playerNumTurn++;
         repaint();
@@ -138,19 +143,12 @@ public class GameMap extends JPanel {
                 if (isCellEmpty(y, x)){
                     continue;
                 }
-                if (field[y][x] == DOT_PLAYER1){
-                    g.setColor(Color.blue);
-                    g.fillOval(x * cellWidth + DOT_PADDING,
-                            y * cellHeight + DOT_PADDING,
-                            cellWidth - DOT_PADDING * 2,
-                            cellHeight - DOT_PADDING * 2);
-                } else {
-                    g.setColor(Color.magenta);
-                    g.fillRect(x * cellWidth + DOT_PADDING,
-                            y * cellHeight + DOT_PADDING,
-                            cellWidth - DOT_PADDING * 2,
-                            cellHeight - DOT_PADDING * 2);
-                }
+
+                g.drawImage(sField[y][x].getStone(), x * cellWidth + DOT_PADDING,
+                        y * cellHeight + DOT_PADDING,
+                        cellWidth - DOT_PADDING * 2,
+                        cellHeight - DOT_PADDING * 2, null);
+
             }
         }
         if (isGameOver){
@@ -169,16 +167,16 @@ public class GameMap extends JPanel {
             case STATE_DRAW -> g.drawString("НИЧЬЯ!!!", getWidth() / 3, getHeight()/2 + 10);
             case STATE_WIN_PLAYER1 -> {
                 if (gameMode == 0){
-                    g.drawString("ПОБЕДИЛ ЧЕЛОВЕК", 60, getHeight() / 2 + 10);
+                    g.drawString("ПОБЕДИЛ ЧЕЛОВЕК", 40, getHeight() / 2 + 10);
                 } else {
-                    g.drawString("ПОБЕДИЛ ИГРОК 1", 60, getHeight() / 2 + 10);
+                    g.drawString("ПОБЕДИЛ ИГРОК 1", 40, getHeight() / 2 + 10);
                 }
             }
             case STATE_WIN_PLAYER2 -> {
                 if (gameMode == 0){
-                    g.drawString("ПОБЕДИЛ КОМПЬЮТЕР", 60, getHeight() / 2 + 10);
+                    g.drawString("ПОБЕДИЛ КОМПЬЮТЕР", 40, getHeight() / 2 + 10);
                 } else {
-                    g.drawString("ПОБЕДИЛ ИГРОК 2", 60, getHeight() / 2 + 10);
+                    g.drawString("ПОБЕДИЛ ИГРОК 2", 40, getHeight() / 2 + 10);
                 }
             }
         }
@@ -263,8 +261,10 @@ public class GameMap extends JPanel {
                 y = random.nextInt(fieldSize);
             }while (isCellValid(y, x));
         }
-        playerNumTurn++;
+
         field[y][x] = DOT_PLAYER2;
+        sField[y][x] = new Stone(playerNumTurn);
+        playerNumTurn++;
         repaint();
     }
 

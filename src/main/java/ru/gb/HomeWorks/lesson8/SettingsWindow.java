@@ -1,5 +1,6 @@
 package ru.gb.HomeWorks.lesson8;
 
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -48,7 +49,7 @@ public class SettingsWindow extends JFrame {
         });
 
         winLengthSlider.addChangeListener(e ->
-            labelWinLength.setText(WIN_LENGTH_PREFIX + winLengthSlider.getValue())
+                labelWinLength.setText(WIN_LENGTH_PREFIX + winLengthSlider.getValue())
         );
 
         add(new JLabel("<html><body><i>Выбор размера поля</i></body></html>"));
