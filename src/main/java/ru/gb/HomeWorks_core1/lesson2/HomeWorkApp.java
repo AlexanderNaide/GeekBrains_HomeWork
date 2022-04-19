@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks.lesson2;
+package ru.gb.HomeWorks_core1.lesson2;
 
 public class HomeWorkApp {
     public static void main(String[] args) {

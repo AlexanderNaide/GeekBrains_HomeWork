@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks.lesson7;
+package ru.gb.HomeWorks_core1.lesson7;
 
 public class Cat {
 

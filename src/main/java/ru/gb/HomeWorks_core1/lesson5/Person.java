@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks.lesson5;
+package ru.gb.HomeWorks_core1.lesson5;
 
 public class Person {
 

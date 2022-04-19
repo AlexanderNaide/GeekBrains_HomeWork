@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks.lesson8;
+package ru.gb.HomeWorks_core1.lesson8;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

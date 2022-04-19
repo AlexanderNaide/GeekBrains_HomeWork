@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks.lesson3;
+package ru.gb.HomeWorks_core1.lesson3;
 
 import java.util.Arrays;
 import java.util.Random;

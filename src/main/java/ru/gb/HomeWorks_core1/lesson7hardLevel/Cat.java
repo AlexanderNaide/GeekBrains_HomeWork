@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks.lesson7hardLevel;
+package ru.gb.HomeWorks_core1.lesson7hardLevel;
 
 public class Cat extends Thread {
 

@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks.lesson4;
+package ru.gb.HomeWorks_core1.lesson4;
 
 import java.util.Arrays;
 import java.util.Locale;

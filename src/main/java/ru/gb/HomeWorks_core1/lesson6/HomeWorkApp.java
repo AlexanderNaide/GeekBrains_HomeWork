@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks.lesson6;
+package ru.gb.HomeWorks_core1.lesson6;
 
 public class HomeWorkApp {
 
