@@ -164,22 +164,24 @@ public class GameMap extends JPanel {
         g.setFont(new Font("Times New Roman", Font.BOLD, 32));
 
         switch (stateGameOver) {
-            case STATE_DRAW -> g.drawString("НИЧЬЯ!!!", getWidth() / 3, getHeight()/2 + 10);
+            case STATE_DRAW -> g.drawString("НИЧЬЯ!!!", getWidth() / 3 + 10, getHeight()/2 + 10);
             case STATE_WIN_PLAYER1 -> {
                 if (gameMode == 0){
-                    g.drawString("ПОБЕДИЛ ЧЕЛОВЕК", 40, getHeight() / 2 + 10);
+                    g.drawString("ПОБЕДИЛ ЧЕЛОВЕК", 60, getHeight() / 2);
                 } else {
-                    g.drawString("ПОБЕДИЛ ИГРОК 1", 40, getHeight() / 2 + 10);
+                    g.drawString("ПОБЕДИЛ ИГРОК 1", 55, getHeight() / 2);
                 }
             }
             case STATE_WIN_PLAYER2 -> {
                 if (gameMode == 0){
-                    g.drawString("ПОБЕДИЛ КОМПЬЮТЕР", 40, getHeight() / 2 + 10);
+                    g.drawString("ПОБЕДИЛ КОМПЬЮТЕР", 45, getHeight() / 2);
                 } else {
-                    g.drawString("ПОБЕДИЛ ИГРОК 2", 40, getHeight() / 2 + 10);
+                    g.drawString("ПОБЕДИЛ ИГРОК 2", 50, getHeight() / 2);
                 }
             }
         }
+        g.setFont(new Font("Times New Roman", Font.BOLD, 16));
+        g.drawString("СЧЕТ   " + scorePlayer1 + " : " + scorePlayer2, getWidth() / 2 - 44, getHeight()/2 + 40);
     }
 
     private boolean gameCheck(){
