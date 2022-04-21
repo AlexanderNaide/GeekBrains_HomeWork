@@ -11,20 +11,25 @@ public class Robot implements Run{
     }
 
     @Override
-    public void jump(Wall wall) {
+    public boolean jump(Wall wall) {
         if (possibleBarrier > wall.getBarrier()) {
-            System.out.printf("Я робот и я прыгнул на %s метра.", wall.getBarrier());
+            System.out.printf("Робот прыгнул на %s метра.\n", wall.getBarrier());
+            return true;
         } else {
-            System.out.printf("Я робот и барьер %s метра для меня непреодалим.", wall.getBarrier());
+            System.out.printf("Робот не смог перепрыгнуть препятствие в %s метра и выбывавет из созтязания.\n", wall.getBarrier());
+            return false;
         }
     }
 
+
     @Override
-    public void run(Treadmill treadmill) {
+    public boolean run(Treadmill treadmill) {
         if (possibleDistance > treadmill.getDistance()) {
-            System.out.printf("Я робот и я пробежал %s метров.", treadmill.getDistance());
+            System.out.printf("Робот пробежал %s метров.\n", treadmill.getDistance());
+            return true;
         } else {
-            System.out.printf("Я робот и дистанция %s метров для меня недостижима.", treadmill.getDistance());
+            System.out.printf("Робот не смог пробежать %s метров и выбывавет из созтязания.\n", treadmill.getDistance());
+            return false;
         }
     }
 }
