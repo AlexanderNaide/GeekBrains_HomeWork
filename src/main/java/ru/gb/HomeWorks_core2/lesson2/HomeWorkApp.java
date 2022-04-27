@@ -15,17 +15,28 @@ public class HomeWorkApp {
 
         arr[1][1] = "four"; // Закомментировать/расскоментировать для получения MyArrayDataException
 
-        int summ = 0;
+        int summ;
         try {
             summ = HomeWorkMethod(arr);
+            System.out.println(summ);
         } catch (MyArraySizeException | MyArrayDataException e){
             e.printStackTrace();
         }
-        System.out.println(summ);
     }
 
     public static int HomeWorkMethod(String[][] arr) throws MyArraySizeException, MyArrayDataException {
-        if (arr.length != 4 || arr[0].length != 4) {
+        boolean checkSize = true;
+        if (arr.length != 4) {
+            checkSize = false;
+        } else {
+            for (String[] strings : arr) {
+                if (strings.length != 4) {
+                    checkSize = false;
+                    break;
+                }
+            }
+        }
+        if (!checkSize) {
             throw new MyArraySizeException();
         }
         int summ = 0;
