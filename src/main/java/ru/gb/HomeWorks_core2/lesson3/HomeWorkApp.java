@@ -9,7 +9,6 @@ public class HomeWorkApp {
 
         /************    Задание 1    ************/
 
-
         List<String> list = new ArrayList<>();
 
         list.add("January");
@@ -26,7 +25,6 @@ public class HomeWorkApp {
             if (map.containsKey(s)) map.put(s, map.get(s)+1);
             else map.put(s, 1);
         });
-
         System.out.println(list);
 
         map.forEach((s, integer) -> System.out.println(s + " (" + integer + ")"));
@@ -37,18 +35,14 @@ public class HomeWorkApp {
 
         TelephoneDirectory directory = new TelephoneDirectory();
 
-        directory.add("gfgfg", "85566555552");
-
         directory.add("Иванов", "+79997773240");
         directory.add("Грибанов Серый", "89083201610");
-//        directory.add("Иванов", 89194652142);
+        directory.add("Иванов", "89194652142");
         directory.add("Самойлов Глеб", "89997778888");
-//        directory.add("Иванов", 89203245159);
-
-        directory.get("Самойлов Глеб");
+        directory.add("Иванов", "89203245159");
+        System.out.println("-------------------");
+//        directory.get("Самойлов Глеб");
         directory.get("Иванов");
-//        directory.get(89083201610);
-
-        directory.printDirectory();
+//        directory.get("Приют для котиков");
     }
 }
