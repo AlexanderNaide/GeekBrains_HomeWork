@@ -23,7 +23,7 @@ import java.util.Scanner;
 
             while (true){
                 String outcome = scanner.nextLine();
-                out.writeUTF("ECHO: " + outcome);
+                out.writeUTF(outcome);
                 Thread.sleep(50);
                 String income = in.readUTF();
                 System.out.println("Got the answer: " + income);
