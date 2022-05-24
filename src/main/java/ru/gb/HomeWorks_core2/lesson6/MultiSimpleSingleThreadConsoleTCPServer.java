@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Set;
 
 public class MultiSimpleSingleThreadConsoleTCPServer {
 
@@ -45,13 +47,17 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
             }
         }
         System.out.println("Server stopped.");
+        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+        System.out.println(Arrays.toString(threadArray));
+
     }
 
     private void startConsoleInput() {
         serverThread = new Thread(() -> {
             try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
                 System.out.println("Enter you message >>>>>>");
-                while(!Thread.currentThread().isInterrupted()){
+                while(!serverThread.isInterrupted()){
                     if (br.ready()){
                         String outcome = br.readLine();
                         String serverMessage = "Message send for client: ";
@@ -81,7 +87,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
     private void waitConnection(ServerSocket serverSocket) throws IOException {
         System.out.println("Waiting for connection...");
 
-        while (!serverSocket.isClosed() && !serverThread.isInterrupted()) {
+        while (!serverThread.isInterrupted()) {
             int count = clientList.size();
             clientList.add(serverSocket.accept());
             Thread thread = clientStart(count);
@@ -97,7 +103,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
                 var in = new DataInputStream(clientList.get(count).getInputStream());
                 var out = new DataOutputStream(clientList.get(count).getOutputStream());
 
-                while (true){
+                while (!serverThread.isInterrupted()){
                     String income = in.readUTF();
                     if (income.startsWith("/end")){
                         shutdown();
