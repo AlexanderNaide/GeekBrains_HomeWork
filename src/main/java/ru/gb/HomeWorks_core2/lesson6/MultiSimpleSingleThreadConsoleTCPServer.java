@@ -12,7 +12,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
     private static final int PORT = 6830;
     private Thread serverThread;
     private final ArrayList <Socket> clientList = new ArrayList<>();
-    private final ArrayList <Thread> threads = new ArrayList<>();
+//    private final ArrayList <Thread> threads = new ArrayList<>();
 
     public static void main(String[] args) {
         new MultiSimpleSingleThreadConsoleTCPServer().start();
@@ -22,9 +22,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
         try(ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server started");
             startConsoleInput();
-            System.out.println("точка 1");
             waitConnection(serverSocket);
-            System.out.println("точка 2");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -38,19 +36,16 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
 
     private void shutdown() throws IOException {
         if (serverThread != null && serverThread.isAlive()){
+
             serverThread.interrupt();
             for (Socket s: clientList) {
                 s.close();
             }
-            for (Thread t: threads) {
-                t.interrupt();
-            }
+//            for (Thread t: threads) {
+//                t.interrupt();
+//            }
         }
         System.out.println("Server stopped.");
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-        System.out.println(Arrays.toString(threadArray));
-
     }
 
     private void startConsoleInput() {
@@ -60,6 +55,10 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
                 while(!serverThread.isInterrupted()){
                     if (br.ready()){
                         String outcome = br.readLine();
+                        if (outcome.startsWith("/end")){
+                            shutdown();
+                            break;
+                        }
                         String serverMessage = "Message send for client: ";
                         if (!clientList.isEmpty()) {
                             for (int i = 0; i < clientList.size(); i++) { // Цикл рассылает сообщение от сервера всем из списка клиентов.
@@ -92,7 +91,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
             clientList.add(serverSocket.accept());
             Thread thread = clientStart(count);
             thread.start();
-            threads.add(thread);
+//            threads.add(thread);
             System.out.println("Client #" + count + " connected.");
         }
     }
@@ -100,10 +99,11 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
     private Thread clientStart(int count){
         return new Thread(() -> {
             try {
-                var in = new DataInputStream(clientList.get(count).getInputStream());
-                var out = new DataOutputStream(clientList.get(count).getOutputStream());
+                Socket socket = clientList.get(count);
+                var in = new DataInputStream(socket.getInputStream());
+                var out = new DataOutputStream(socket.getOutputStream());
 
-                while (!serverThread.isInterrupted()){
+                while (!serverThread.isInterrupted() && !socket.isClosed()){
                     String income = in.readUTF();
                     if (income.startsWith("/end")){
                         shutdown();
