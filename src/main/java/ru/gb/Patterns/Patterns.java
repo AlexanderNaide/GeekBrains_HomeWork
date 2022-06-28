@@ -1,8 +1,13 @@
 package ru.gb.Patterns;
 
+import ru.gb.Patterns.Factory.*;
+
 public class Patterns {
 
     public static void main(String[] args) {
+
+
+        /***** Singlton & Multiton *****/
 
         Singleton singleton1 = Singleton.getInstance();
         Singleton singleton2 = Singleton.getInstance();
@@ -24,6 +29,20 @@ public class Patterns {
         System.out.println(limitedMultiton2);
         System.out.println(limitedMultiton3);
         System.out.println(limitedMultiton4);
+
+
+        /***** Фабрика обьектов / FactoryMethod *****/
+
+        Store store = new GroceryStore();
+        store.saleGood();
+
+        StoreFactory storeFactory = new GroceryStoreFactory();
+        Store storeGrocery = storeFactory.createStore();
+        storeGrocery.saleGood();
+
+        StoreFactory storeFactoryWear = new WearStoreFactory();
+        Store storeWear = storeFactoryWear.createStore();
+        storeWear.saleGood();
 
 
 
