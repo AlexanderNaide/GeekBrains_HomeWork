@@ -1,4 +1,4 @@
-package ru.gb.Patterns;
+package ru.gb.Patterns.Singleton;
 
 import java.util.HashMap;
 import java.util.Map;
