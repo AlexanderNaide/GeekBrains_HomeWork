@@ -12,7 +12,7 @@ public class CityLogisticFactory implements LogisticFactory {
 
     @Override
     public Logistic createLogistic() {
-        Logistic City = new СityLogistic();
+        СityLogistic cityLogistic = new СityLogistic();
         ArrayList <LogisticTransport> transports = new ArrayList<>();
 
         CreateTransport createTransport = new CreateTransport();
@@ -28,24 +28,27 @@ public class CityLogisticFactory implements LogisticFactory {
 
         double volume = 0;
         double capacity = 0;
-        for (int i = 0; i < transports.size();) {
-            LogisticTransport lt = transports.get(i);
-            if (i == 0){
-                volume = lt.getVolume();
-                capacity = lt.getBearingCapacity();
-            } else {
-                if (volume < lt.getVolume() && capacity < lt.getBearingCapacity()){
+        for (int j = 0; j < transports.size(); j++) {
+            for (int i = 0; i < transports.size() - j;) {
+                LogisticTransport lt = transports.get(i);
+                if (i == 0 || (volume < lt.getVolume() && capacity < lt.getBearingCapacity())){
+                    volume = lt.getVolume();
+                    capacity = lt.getBearingCapacity();
                     i++;
                 } else {
+                    transports.remove(i);
                     transports.add(i - 1, lt);
+                    volume = lt.getVolume();
+                    capacity = lt.getBearingCapacity();
                 }
             }
         }
 
-        for (LogisticTransport transport : transports) {
-            System.out.println(transport.getVolume() + " - " + transport.getBearingCapacity());
-        }
+//        for (LogisticTransport transport : transports) {
+//            System.out.println(transport.getVolume() + " - " + transport.getBearingCapacity());
+//        }
 
-        return new СityLogistic();
+        cityLogistic.setLogisticTransports(transports);
+        return cityLogistic;
     }
 }

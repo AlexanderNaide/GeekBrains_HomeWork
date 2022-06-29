@@ -1,6 +1,7 @@
 package ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory;
 
 import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Builder.LogisticTransport;
+import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.EasyBuilder.Cargo;
 import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory.Logistic;
 
 import java.util.ArrayList;
@@ -14,7 +15,21 @@ public class СityLogistic implements Logistic {
     }
 
     @Override
-    public void LogisticGood() {
-        System.out.println("Груз доставлен по городу");
+    public void LogisticGood(Cargo cargo) {
+        LogisticTransport priorityTransport = null;
+        for (LogisticTransport logisticTransport : logisticTransports) {
+            if(cargo.getVolume() <= logisticTransport.getVolume() && cargo.getCapacity() <= logisticTransport.getBearingCapacity()){
+                priorityTransport = logisticTransport;
+                break;
+            }
+        }
+
+        if (priorityTransport != null) {
+            System.out.print("Груз доставлен по городу. ");
+            System.out.print(cargo);
+            System.out.println(priorityTransport);
+        } else {
+            System.out.println("Груз " + cargo.getName() + " не может быть доставлен.");
+        }
     }
 }
