@@ -1,4 +1,4 @@
-package ru.gb.Patterns;
+package ru.gb.Patterns.Singleton;
 
 public class Singleton {
 
