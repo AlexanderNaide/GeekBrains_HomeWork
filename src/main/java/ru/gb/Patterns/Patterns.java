@@ -9,6 +9,7 @@ import ru.gb.Patterns.Factory.*;
 import ru.gb.Patterns.Singleton.LimitedMultiton;
 import ru.gb.Patterns.Singleton.Multiton;
 import ru.gb.Patterns.Singleton.Singleton;
+import ru.gb.Patterns.Visitor.*;
 
 public class Patterns {
 
@@ -79,6 +80,27 @@ public class Patterns {
         System.out.println(report);
         System.out.println(report.getHeader());
         System.out.println(report.getContent());
+
+        /***** Визитер / Visitor *****/
+        System.out.println("\n*********** Visitor ***********");
+        Student vasa = new Student();
+        vasa.name = "Вася";
+        vasa.lastname = "Пупкин";
+        vasa.groupId = 100;
+
+        Teacher arkadiy = new Teacher();
+        arkadiy.name = "Аркадий";
+        arkadiy.lastname = "Паровозов";
+        arkadiy.totalGroup = 4;
+
+        School school = new School();
+        school.addPerson(vasa);
+        school.addPerson(arkadiy);
+
+        XmlPersonVisitor xml = new XmlPersonVisitor();
+        TextPersonVisitor txt = new TextPersonVisitor();
+        school.Accept(xml);
+        school.Accept(txt);
 
     }
 }
