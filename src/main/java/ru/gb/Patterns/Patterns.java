@@ -6,6 +6,8 @@ import ru.gb.Patterns.Builder.IndustrialUnit;
 import ru.gb.Patterns.Builder.LightIndustrialUnitBuilder;
 import ru.gb.Patterns.EasyBuilder.Report;
 import ru.gb.Patterns.Factory.*;
+import ru.gb.Patterns.Observer.Document;
+import ru.gb.Patterns.Observer.Person;
 import ru.gb.Patterns.Singleton.LimitedMultiton;
 import ru.gb.Patterns.Singleton.Multiton;
 import ru.gb.Patterns.Singleton.Singleton;
@@ -101,6 +103,32 @@ public class Patterns {
         TextPersonVisitor txt = new TextPersonVisitor();
         school.Accept(xml);
         school.Accept(txt);
+
+
+        /*************** https://metanit.com/ *****************/
+
+        /***** Наблюдатель / Observer *****/
+        System.out.println("\n*********** Observer ***********");
+
+        Person personReviewer = new Person();
+        personReviewer.Id = 1;
+        personReviewer.name = "Корректор";
+
+        Person personAuthor = new Person();
+        personAuthor.Id = 2;
+        personAuthor.name = "Автор";
+
+        Person personCommentator = new Person();
+        personCommentator.Id = 3;
+        personCommentator.name = "Комментатор";
+
+        Document document = new Document("Привет Мир!");
+        document.addSubscriber(personAuthor);
+        document.addSubscriber(personReviewer);
+        document.addSubscriber(personCommentator);
+
+        document.addText("ddd");
+
 
     }
 }
