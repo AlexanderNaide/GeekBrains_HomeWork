@@ -12,13 +12,15 @@ import ru.gb.Patterns.Singleton.LimitedMultiton;
 import ru.gb.Patterns.Singleton.Multiton;
 import ru.gb.Patterns.Singleton.Singleton;
 import ru.gb.Patterns.Visitor.*;
+import ru.gb.Patterns.chainsOfResponsibility.MoneyTransfer;
+import ru.gb.Patterns.chainsOfResponsibility.TransferManager;
 
 public class Patterns {
 
     public static void main(String[] args) {
 
 
-        /***** Singlton & Multiton *****/
+        /***** Singleton & Multiton *****/
 
         System.out.println("\n*********** Singleton ***********");
         Singleton singleton1 = Singleton.getInstance();
@@ -128,6 +130,30 @@ public class Patterns {
         document.addSubscriber(personCommentator);
 
         document.addText("ddd");
+
+
+        /***** Цепочка обязанностей / Chains of Responsibility *****/
+        System.out.println("\n*********** Chains of Responsibility ***********");
+
+        MoneyTransfer transfer = new MoneyTransfer();
+        transfer.currency = "RUB";
+        transfer.money = 100.0;
+        transfer.fromAccount = "RZB 0984351451435435";
+        transfer.toAccount = "ALF 0985861451432145";
+        transfer.provider = "B2B";
+
+        TransferManager manager = new TransferManager();
+        manager.doTransfer(transfer);
+
+        MoneyTransfer newTransfer = new MoneyTransfer();
+        newTransfer.currency = "RUB";
+        newTransfer.money = 1000.0;
+        newTransfer.fromAccount = "RZB 0984351451435435";
+        newTransfer.toAccount = "ALF 0985861451432145";
+        newTransfer.provider = "B2P";
+
+        manager.doTransfer(newTransfer);
+
 
 
     }
