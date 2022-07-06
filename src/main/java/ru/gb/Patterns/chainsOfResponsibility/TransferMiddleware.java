@@ -12,10 +12,9 @@ public abstract class TransferMiddleware {
                 return;
             }
         }
-        if (next == null){
-            return;
+        if (next != null){
+            next.process(transfer);
         }
-        next.process(transfer);
     }
 
     public abstract boolean Do(MoneyTransfer transfer);
