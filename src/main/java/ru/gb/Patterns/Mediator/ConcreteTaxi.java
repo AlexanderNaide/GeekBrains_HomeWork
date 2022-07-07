@@ -52,6 +52,12 @@ public class ConcreteTaxi implements Taxi{
 
     @Override
     public void assingDriver(Trip trip) {
-        mediator.requestAll(trip);
+        if (!busy && !trip.isAssignedTrip()){
+            trip.setAssignedTrip(true);
+            System.out.println("\n Trip to " + trip.getAddress() + " assingned on " + name + ".");
+            setBooked();
+        } else {
+            mediator.requestAll(trip);
+        }
     }
 }

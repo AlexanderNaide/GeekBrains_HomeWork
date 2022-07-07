@@ -11,7 +11,7 @@ public class ConcreteMediator implements Mediator{
 
     List<Taxi> taxis = new ArrayList<>();
 
-    void add(Taxi taxi){
+    public void add(Taxi taxi){
         taxis.add(taxi);
     }
 

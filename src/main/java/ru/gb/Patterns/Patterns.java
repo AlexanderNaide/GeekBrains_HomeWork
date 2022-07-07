@@ -6,6 +6,9 @@ import ru.gb.Patterns.Builder.IndustrialUnit;
 import ru.gb.Patterns.Builder.LightIndustrialUnitBuilder;
 import ru.gb.Patterns.EasyBuilder.Report;
 import ru.gb.Patterns.Factory.*;
+import ru.gb.Patterns.Mediator.ConcreteMediator;
+import ru.gb.Patterns.Mediator.ConcreteTaxi;
+import ru.gb.Patterns.Mediator.Trip;
 import ru.gb.Patterns.Observer.Document;
 import ru.gb.Patterns.Observer.Person;
 import ru.gb.Patterns.Singleton.LimitedMultiton;
@@ -195,11 +198,33 @@ public class Patterns {
         /***** Mediator / Посредник *****/
         System.out.println("\n*********** Mediator ***********");
 
+        ConcreteMediator mediator = new ConcreteMediator();
+        ConcreteTaxi taxi1 = new ConcreteTaxi("Driver 1", "Free", false, mediator);
+        ConcreteTaxi taxi2 = new ConcreteTaxi("Driver 2", "Free", false, mediator);
+        ConcreteTaxi taxi3 = new ConcreteTaxi("Driver 3", "Free", false, mediator);
+        ConcreteTaxi taxi4 = new ConcreteTaxi("Driver 4", "Free", false, mediator);
+        ConcreteTaxi taxi5 = new ConcreteTaxi("Driver 5", "Free", false, mediator);
 
-        /** ---- 56:08 ---- **/
+        mediator.add(taxi1);
+        mediator.add(taxi2);
+        mediator.add(taxi3);
+        mediator.add(taxi4);
+        mediator.add(taxi5);
 
-
-
+        Trip trip1 = new Trip(false, "Address 1");
+        Trip trip2 = new Trip(false, "Address 2");
+        Trip trip3 = new Trip(false, "Address 3");
+        Trip trip4 = new Trip(false, "Address 4");
+        Trip trip5 = new Trip(false, "Address 5");
+        Trip trip6 = new Trip(false, "Address 6");
+        taxi1.assingDriver(trip1);
+        taxi3.assingDriver(trip2);
+        taxi1.assingDriver(trip3);
+        taxi5.assingDriver(trip4);
+        taxi2.assingDriver(trip6);
+        taxi2.assingDriver(trip5);
+        taxi3.setFree();
+        taxi2.assingDriver(trip5);
 
     }
 }
