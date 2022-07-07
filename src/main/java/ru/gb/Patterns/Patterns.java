@@ -14,9 +14,15 @@ import ru.gb.Patterns.Observer.Person;
 import ru.gb.Patterns.Singleton.LimitedMultiton;
 import ru.gb.Patterns.Singleton.Multiton;
 import ru.gb.Patterns.Singleton.Singleton;
+import ru.gb.Patterns.Strategy.FixedDiscount;
+import ru.gb.Patterns.Strategy.PercentDiscount;
+import ru.gb.Patterns.Strategy.Product;
+import ru.gb.Patterns.Strategy.ShoppingCart;
 import ru.gb.Patterns.Visitor.*;
 import ru.gb.Patterns.chainsOfResponsibility.MoneyTransfer;
 import ru.gb.Patterns.chainsOfResponsibility.TransferManager;
+
+import java.math.BigDecimal;
 
 public class Patterns {
 
@@ -225,6 +231,16 @@ public class Patterns {
         taxi2.assingDriver(trip5);
         taxi3.setFree();
         taxi2.assingDriver(trip5);
+
+        /***** Strategy / Стратегия *****/
+        System.out.println("\n*********** Strategy ***********");
+
+        Product product = new Product(1L, "Product 1", new BigDecimal(100));
+        ShoppingCart cart = new ShoppingCart();
+//        cart.setDiscountable(new PercentDiscount(new BigDecimal("0.1")));
+        cart.setDiscountable(new FixedDiscount(new BigDecimal("0.1")));
+        cart.addToCart(product);
+        System.out.println("Total = " + cart.calcTotal());
 
     }
 }
