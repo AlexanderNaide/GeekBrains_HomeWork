@@ -4,6 +4,8 @@ import ru.gb.Patterns.Builder.Director;
 import ru.gb.Patterns.Builder.HeavyIndustrialUnitBuilder;
 import ru.gb.Patterns.Builder.IndustrialUnit;
 import ru.gb.Patterns.Builder.LightIndustrialUnitBuilder;
+import ru.gb.Patterns.Command.*;
+import ru.gb.Patterns.Command.Commands.*;
 import ru.gb.Patterns.EasyBuilder.Report;
 import ru.gb.Patterns.Factory.*;
 import ru.gb.Patterns.Mediator.ConcreteMediator;
@@ -24,6 +26,8 @@ import ru.gb.Patterns.chainsOfResponsibility.MoneyTransfer;
 import ru.gb.Patterns.chainsOfResponsibility.TransferManager;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Patterns {
 
@@ -253,6 +257,48 @@ public class Patterns {
             System.out.println(phone.getState());
             phone.switchState();
         }
+
+
+        /***** Command / Команда *****/
+        System.out.println("\n*********** Command ***********");
+
+        // Создаем "Пльт" и добавляем туда команды к объекту.
+        MyRemoteControl remoteControl = new MyRemoteControl();
+        MusicBox musicBox = new MusicBox();
+        remoteControl.addCommand(0, new TurnOnMusicBox(musicBox));
+        remoteControl.addCommand(1, new MakeLoudMusicBox(musicBox));
+        remoteControl.addCommand(2, new TurnOffMusicBox(musicBox));
+
+        // На тот же пульт добавляем команды к другому объекту
+        Light light = new Light();
+        remoteControl.addCommand(3, new TurnOnLight(light));
+        remoteControl.addCommand(4, new TurnOffLight(light));
+
+        remoteControl.pressButton(0);
+        remoteControl.pressButton(1);
+        remoteControl.pressButton(1);
+        remoteControl.pressButton(2);
+
+        remoteControl.pressButton(3);
+        remoteControl.pressButton(4);
+
+        // Складываем команды в список команд
+        List <Command> commands = new ArrayList<>();
+        commands.add(new TurnOnLight(light));
+        commands.add(new TurnOnMusicBox(musicBox));
+        commands.add(new TurnOffLight(light));
+
+        CommandSequence commandSequence = new CommandSequence(commands);
+
+        //Добавляем на пульт последовательность команд (по одной кнопке вызывается список команд - типа "скрипт")
+        remoteControl.addCommand(5, commandSequence);
+
+        System.out.println("------------------------------");
+
+        remoteControl.pressButton(5);
+
+
+
 
     }
 }
