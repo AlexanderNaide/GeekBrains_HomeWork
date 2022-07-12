@@ -1,11 +1,11 @@
-package ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory;
+package ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Factory;
 
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Builder.LogisticTransport;
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.EasyBuilder.Cargo;
+import ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Builder.LogisticTransport;
+import ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.EasyBuilder.Cargo;
 
 import java.util.ArrayList;
 
-public class IntercityLogistic implements Logistic {
+public class СityLogistic implements Logistic {
 
     public ArrayList<LogisticTransport> logisticTransports;
 
@@ -24,7 +24,7 @@ public class IntercityLogistic implements Logistic {
         }
 
         if (priorityTransport != null) {
-            System.out.print("Груз доставлен в другой город. ");
+            System.out.print("Груз доставлен по городу. ");
             System.out.print(cargo);
             System.out.println(priorityTransport);
         } else {

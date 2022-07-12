@@ -1,15 +1,10 @@
-package ru.gb.HomeWorks_core2.Butcamp_Pattern;
+package ru.gb.HomeWorks_core2.Butcamp.Pattern;
 
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Builder.*;
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.EasyBuilder.Cargo;
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory.CityLogisticFactory;
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory.IntercityLogisticFactory;
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory.Logistic;
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory.LogisticFactory;
-import ru.gb.Patterns.Factory.GroceryStoreFactory;
-import ru.gb.Patterns.Factory.Store;
-import ru.gb.Patterns.Factory.StoreFactory;
-import ru.gb.Patterns.Factory.WearStoreFactory;
+import ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.EasyBuilder.Cargo;
+import ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Factory.CityLogisticFactory;
+import ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Factory.IntercityLogisticFactory;
+import ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Factory.Logistic;
+import ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Factory.LogisticFactory;
 
 public class LogisticApp {
     public static void main(String[] args) {

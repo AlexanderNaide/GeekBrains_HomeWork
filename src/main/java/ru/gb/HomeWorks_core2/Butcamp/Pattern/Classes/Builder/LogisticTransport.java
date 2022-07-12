@@ -1,4 +1,4 @@
-package ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Builder;
+package ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Builder;
 
 public class LogisticTransport {
     private String name;
