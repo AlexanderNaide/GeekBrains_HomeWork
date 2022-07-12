@@ -1,6 +1,4 @@
-package ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.EasyBuilder;
-
-import ru.gb.Patterns.EasyBuilder.Report;
+package ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.EasyBuilder;
 
 public class Cargo {
 

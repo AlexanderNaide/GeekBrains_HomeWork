@@ -1,6 +1,4 @@
-package ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory;
-
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Classes.Factory.Logistic;
+package ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Factory;
 
 /**
  * Интерфейс фабрики логистической компании
