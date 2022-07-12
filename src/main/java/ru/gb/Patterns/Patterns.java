@@ -8,6 +8,8 @@ import ru.gb.Patterns.Command.*;
 import ru.gb.Patterns.Command.Commands.*;
 import ru.gb.Patterns.EasyBuilder.Report;
 import ru.gb.Patterns.Factory.*;
+import ru.gb.Patterns.Iterator.MarketStore;
+import ru.gb.Patterns.Iterator.MyIterator;
 import ru.gb.Patterns.Mediator.ConcreteMediator;
 import ru.gb.Patterns.Mediator.ConcreteTaxi;
 import ru.gb.Patterns.Mediator.Trip;
@@ -298,6 +300,44 @@ public class Patterns {
         remoteControl.pressButton(5);
 
 
+        /***** Iterator / Обходчик (Иногда называют Курсор (Cursor) *****/
+        System.out.println("\n*********** Iterator ***********");
+
+        /*
+        Iterator позволяет обходить коллекции данных не раскрывая их внутреннего содержимого.
+
+        Идея паттерна состоит в том, чтобы вынести поведение обхода коллекции из самой коллекции в отдельный класс
+
+        Объект-итератор станет отслеживать состояние обхода, текущую позицию в коллекции, и сколько элементов еще осталось обойти.
+
+        Одну и ту же коллекцию смогут одновременно обходить различные итераторы, а сама коллекция об этом даже не узнает.
+        */
+
+        String[] goods = {"Book", "Disk", "Juice", "Refrigerator", "Bad good", "TV", "Bottle", "Pizza", "Bottle of beer", "Bottle of wine"};
+        MarketStore market = new MarketStore("Chaos", goods);
+        MyIterator iterator = market.getMyIterator();
+//        System.out.println(market.getName());
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+        System.out.println("------------------------");
+        int itemId = 7;
+        if (itemId < goods.length){
+            System.out.println(iterator.getIdItem(itemId));
+        } else {
+            System.out.println("The good #" + itemId + " is absent.");
+        }
+        while(iterator.hasNext()){
+            String good = (String) iterator.next();
+            if (good.equals("Bad good")){
+                int bad = iterator.getIteratorPosition() - 1;
+                System.out.println("Id of bad good is " + bad);
+                iterator.removeItem(bad);
+            }
+        }
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
 
 
     }
