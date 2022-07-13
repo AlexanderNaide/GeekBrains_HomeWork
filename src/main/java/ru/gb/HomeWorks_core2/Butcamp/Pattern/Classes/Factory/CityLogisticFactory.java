@@ -1,7 +1,6 @@
 package ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Factory;
 
 import ru.gb.HomeWorks_core2.Butcamp.Pattern.Classes.Builder.*;
-import ru.gb.HomeWorks_core2.Butcamp_Pattern.Pattern.Classes.Builder.*;
 
 import java.util.ArrayList;
 

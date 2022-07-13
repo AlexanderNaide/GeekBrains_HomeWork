@@ -9,7 +9,8 @@ public class HashTable<T> {
 
     private List<T>[] table = new ArrayList[size];
 
-    private HashTable(){}
+    HashTable(){
+    }
 
     public HashTable(int size){
         this.size = size;
