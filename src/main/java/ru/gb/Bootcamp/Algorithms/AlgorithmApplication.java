@@ -28,7 +28,24 @@ public class AlgorithmApplication {
         System.out.println(tree.exist(9));
         System.out.println(tree.exist(12));
 
-        //-------------1:00:00-------------
+        final RedBlackTree redBlackTree = new RedBlackTree();
+        redBlackTree.add(3);
+        redBlackTree.add(1);
+        redBlackTree.add(4);
+        redBlackTree.add(2);
+        redBlackTree.add(5);
+        redBlackTree.add(6);
+        redBlackTree.add(9);
+        redBlackTree.add(7);
+        redBlackTree.add(11);
+        redBlackTree.add(10);
+        redBlackTree.add(12);
+        redBlackTree.add(13);
+        redBlackTree.add(14);
+        redBlackTree.add(15);
+
+//        System.out.println(redBlackTree.exist(9));
+//        System.out.println(redBlackTree.exist(12));
 
 
     }
