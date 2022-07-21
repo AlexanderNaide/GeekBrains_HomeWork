@@ -44,9 +44,6 @@ public class AlgorithmApplication {
         redBlackTree.add(14);
         redBlackTree.add(15);
 
-//        System.out.println(redBlackTree.exist(9));
-//        System.out.println(redBlackTree.exist(12));
-
 
     }
 }
