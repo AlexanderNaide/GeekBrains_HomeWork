@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Document {
 
-    private List<Subscriber> subscribers = new ArrayList<>();
+    private final List <Subscriber> subscribers = new ArrayList<>();
 
     private String body;
 
