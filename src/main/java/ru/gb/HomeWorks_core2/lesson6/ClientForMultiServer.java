@@ -5,11 +5,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ClientForMultiServer extends Thread{
+public class ClientForMultiServer extends Thread {
     private final Socket socket;
     private final int clientCount;
 
-    public ClientForMultiServer (Socket socket, int count){
+    public ClientForMultiServer(Socket socket, int count) {
         this.socket = socket;
         this.clientCount = count;
         this.start();
@@ -22,7 +22,7 @@ public class ClientForMultiServer extends Thread{
             var in = new DataInputStream(socket.getInputStream());
             var out = new DataOutputStream(socket.getOutputStream());
 
-            while (true){
+            while (true) {
                 String income = "ECHO: " + in.readUTF();
                 System.out.println("Received for client #" + clientCount + ": " + income);
                 Thread.sleep(50);

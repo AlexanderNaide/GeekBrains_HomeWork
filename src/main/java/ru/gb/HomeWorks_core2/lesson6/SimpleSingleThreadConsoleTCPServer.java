@@ -17,15 +17,15 @@ public class SimpleSingleThreadConsoleTCPServer {
     }
 
     private void start() {
-        try(ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server started");
             waitConnection(serverSocket);
             startConsoleInput();
 
-            while (true){
+            while (true) {
                 String income = in.readUTF();
 
-                if (income.startsWith("/end")){
+                if (income.startsWith("/end")) {
                     shutdown();
                     break;
                 }
@@ -44,11 +44,11 @@ public class SimpleSingleThreadConsoleTCPServer {
     }
 
     private void shutdown() throws IOException {
-        if (serverThread != null && serverThread.isAlive()){
+        if (serverThread != null && serverThread.isAlive()) {
             serverThread.interrupt();
         }
 
-        if (socket != null && socket.isClosed()){
+        if (socket != null && socket.isClosed()) {
             socket.close();
         }
         System.out.println("Server stopped.");
@@ -56,15 +56,15 @@ public class SimpleSingleThreadConsoleTCPServer {
 
     private void startConsoleInput() {
         serverThread = new Thread(() -> {
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
                 System.out.println("Enter you message >>>>>>");
-                while(!Thread.currentThread().isInterrupted() && !socket.isClosed()){
-                    if (br.ready()){
+                while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
+                    if (br.ready()) {
                         String outcome = br.readLine();
                         out.writeUTF(outcome);
                     }
                 }
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
