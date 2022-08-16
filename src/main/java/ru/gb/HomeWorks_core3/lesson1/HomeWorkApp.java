@@ -9,6 +9,7 @@ public class HomeWorkApp {
         /**
          * 1. Написать метод, который меняет два элемента массива местами.(массив может быть любого ссылочного типа);
          */
+        System.out.println("\n\n-------start 1-------");
 
         String[] arrayString = {"Кафе", "Кино", "Боулинг"};
         System.out.println(Arrays.toString(arrayString));
@@ -24,6 +25,7 @@ public class HomeWorkApp {
         /**
          * 2. Написать метод, который преобразует массив в ArrayList;
          */
+        System.out.println("\n\n-------start 2-------");
 
         ArrayList<String> listString = conversionToArrayList(arrayString);
         System.out.println(listString);
@@ -34,20 +36,26 @@ public class HomeWorkApp {
         /**
          * 3. Большая задача.
          */
+        System.out.println("\n\n-------start 3-------");
 
         Box<Apple> appleBox = new Box<>();
         Box<Orange> orangeBox = new Box<>();
         appleBox.addFruit(new Apple());
         appleBox.addFruit(new Apple());
         appleBox.addFruit(new Apple());
-        appleBox.getWeight();
+        System.out.printf("Колличество фруктов в коробке с яблоками: %d, коробка имеет вес: %.2f.\n", appleBox.getList().size(), appleBox.getWeight());
         orangeBox.addFruit(new Orange());
         orangeBox.addFruit(new Orange());
-        orangeBox.getWeight();
+        System.out.printf("Колличество фруктов в коробке с аппельсинами: %d, коробка имеет вес: %.2f.\n", orangeBox.getList().size(), orangeBox.getWeight());
         System.out.println("Результат сравнения: " + appleBox.compare(orangeBox));
         orangeBox.addFruit(new Orange());
-        orangeBox.getWeight();
+        System.out.printf("Теперь колличество фруктов в коробке с аппельсинами: %d, коробка имеет вес: %.2f.\n", orangeBox.getList().size(), orangeBox.getWeight());
         System.out.println("Результат сравнения: " + appleBox.compare(orangeBox));
+        Box<Orange> orangeBoxNew = new Box<>();
+//        appleBox.pourOver(orangeBoxNew); // - яблоки в новую коробку для аппельсинов не пересыпать.
+
+        orangeBox.pourOver(orangeBoxNew); // Берем коробку, которую собрались пересыпать, а в параметрах указываем "Куда" пересыпаем.
+        System.out.printf("В первой коробке осталось %d фруктов, а во второй их стало %d.\n", orangeBox.getList().size(), orangeBoxNew.getList().size());
 
     }
 
