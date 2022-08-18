@@ -10,7 +10,7 @@ public class SimpleEchoTCPServer {
     private static final int PORT = 6830;
 
     public static void main(String[] args) {
-        try(ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server started");
             Socket socket = serverSocket.accept();
             System.out.println("Client connected");
@@ -18,7 +18,7 @@ public class SimpleEchoTCPServer {
             var in = new DataInputStream(socket.getInputStream());
             var out = new DataOutputStream(socket.getOutputStream());
 
-            while (true){
+            while (true) {
                 String income = in.readUTF();
                 System.out.println("Received: " + income);
                 Thread.sleep(50);

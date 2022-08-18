@@ -18,13 +18,13 @@ public class SimpleSingleThreadConsoleTCPClient {
     }
 
     private void start() {
-        try(Socket socket = new Socket(HOST, PORT)) {
+        try (Socket socket = new Socket(HOST, PORT)) {
             System.out.println("Connected to server");
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             startConsoleInput();
 
-            while (!socket.isClosed()){
+            while (!socket.isClosed()) {
                 String income = in.readUTF();
                 System.out.println("Received: " + income);
             }
@@ -40,7 +40,7 @@ public class SimpleSingleThreadConsoleTCPClient {
     }
 
     private void shutdown() throws IOException {
-        if (clientThread != null && clientThread.isAlive()){
+        if (clientThread != null && clientThread.isAlive()) {
             clientThread.interrupt();
         }
 
@@ -49,19 +49,19 @@ public class SimpleSingleThreadConsoleTCPClient {
 
     private void startConsoleInput() {
         clientThread = new Thread(() -> {
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))){
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
                 System.out.println("Enter you message >>>>>>");
-                while(!Thread.currentThread().isInterrupted()){
-                    if (br.ready()){
+                while (!Thread.currentThread().isInterrupted()) {
+                    if (br.ready()) {
                         String outcome = br.readLine();
                         out.writeUTF(outcome);
 
-                        if (outcome.equals("/end")){
+                        if (outcome.equals("/end")) {
                             shutdown();
                         }
                     }
                 }
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });

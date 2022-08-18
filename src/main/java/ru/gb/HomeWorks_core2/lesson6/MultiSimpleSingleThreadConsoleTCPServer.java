@@ -11,7 +11,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
 
     private static final int PORT = 6830;
     private Thread serverThread;
-    private final ArrayList <Socket> clientList = new ArrayList<>();
+    private final ArrayList<Socket> clientList = new ArrayList<>();
 //    private final ArrayList <Thread> threads = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -19,7 +19,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
     }
 
     private void start() {
-        try(ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server started");
             startConsoleInput();
             waitConnection(serverSocket);
@@ -35,10 +35,10 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
     }
 
     private void shutdown() throws IOException {
-        if (serverThread != null && serverThread.isAlive()){
+        if (serverThread != null && serverThread.isAlive()) {
 
             serverThread.interrupt();
-            for (Socket s: clientList) {
+            for (Socket s : clientList) {
                 s.close();
             }
 //            for (Thread t: threads) {
@@ -50,12 +50,12 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
 
     private void startConsoleInput() {
         serverThread = new Thread(() -> {
-            try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
                 System.out.println("Enter you message >>>>>>");
-                while(!serverThread.isInterrupted()){
-                    if (br.ready()){
+                while (!serverThread.isInterrupted()) {
+                    if (br.ready()) {
                         String outcome = br.readLine();
-                        if (outcome.startsWith("/end")){
+                        if (outcome.startsWith("/end")) {
                             shutdown();
                             break;
                         }
@@ -64,7 +64,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
                             for (int i = 0; i < clientList.size(); i++) { // Цикл рассылает сообщение от сервера всем из списка клиентов.
                                 var outOther = new DataOutputStream(clientList.get(i).getOutputStream());
                                 outOther.writeUTF("Message from server: " + outcome);
-                                if (i == 0){
+                                if (i == 0) {
                                     serverMessage = serverMessage + "#" + i;
                                 } else {
                                     serverMessage = serverMessage + ", #" + i;
@@ -76,7 +76,7 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
                         }
                     }
                 }
-            } catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
@@ -96,16 +96,16 @@ public class MultiSimpleSingleThreadConsoleTCPServer {
         }
     }
 
-    private Thread clientStart(int count){
+    private Thread clientStart(int count) {
         return new Thread(() -> {
             try {
                 Socket socket = clientList.get(count);
                 var in = new DataInputStream(socket.getInputStream());
                 var out = new DataOutputStream(socket.getOutputStream());
 
-                while (!serverThread.isInterrupted() && !socket.isClosed()){
+                while (!serverThread.isInterrupted() && !socket.isClosed()) {
                     String income = in.readUTF();
-                    if (income.startsWith("/end")){
+                    if (income.startsWith("/end")) {
                         shutdown();
                         break;
                     }

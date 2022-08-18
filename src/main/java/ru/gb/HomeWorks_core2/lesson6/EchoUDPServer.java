@@ -14,18 +14,18 @@ public class EchoUDPServer {
         new EchoUDPServer().start();
     }
 
-    private void start(){
+    private void start() {
         try (DatagramSocket socket = new DatagramSocket(PORT)) {
             byte[] buf = new byte[512];
 
-            while (true){
+            while (true) {
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
 
                 String income = new String(packet.getData(), 0, packet.getLength());
                 System.out.println("Received: " + income);
 
-                if (income.equals("/end")){
+                if (income.equals("/end")) {
                     break;
                 }
 

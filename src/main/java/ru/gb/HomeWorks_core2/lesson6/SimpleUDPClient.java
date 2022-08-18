@@ -18,25 +18,25 @@ public class SimpleUDPClient {
         new SimpleUDPClient().start();
     }
 
-    private void start(){
+    private void start() {
         try (DatagramSocket socket = new DatagramSocket()) {
             byte[] buf;
             InetAddress address = InetAddress.getByName(HOST);
 
             Scanner scanner = new Scanner(System.in);
 
-                while (true){
-                    String outcome = scanner.nextLine();
-                    buf = outcome.getBytes(StandardCharsets.UTF_8);
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, PORT);
-                    socket.send(packet);
-                    Thread.sleep(50);
-                    byte[] receiveBuf = new byte[buf.length + 6];
-                    packet = new DatagramPacket(receiveBuf, receiveBuf.length);
-                    socket.receive(packet);
-                    String income = new String(packet.getData(), 0, packet.getLength());
-                    System.out.println("Got the answer: " + income);
-                }
+            while (true) {
+                String outcome = scanner.nextLine();
+                buf = outcome.getBytes(StandardCharsets.UTF_8);
+                DatagramPacket packet = new DatagramPacket(buf, buf.length, address, PORT);
+                socket.send(packet);
+                Thread.sleep(50);
+                byte[] receiveBuf = new byte[buf.length + 6];
+                packet = new DatagramPacket(receiveBuf, receiveBuf.length);
+                socket.receive(packet);
+                String income = new String(packet.getData(), 0, packet.getLength());
+                System.out.println("Got the answer: " + income);
+            }
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
