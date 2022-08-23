@@ -115,7 +115,8 @@ public class HomeWorkApp {
     private static void connect() throws ClassNotFoundException, SQLException {
 
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:C:\\Java\\GeekBrains_HomeWork\\src\\main\\java\\ru\\gb\\HomeWorks_core3\\lesson2\\students.db");
+//        connection = DriverManager.getConnection("jdbc:sqlite:C:\\Java\\GeekBrains_HomeWork\\src\\main\\java\\ru\\gb\\HomeWorks_core3\\lesson2\\students.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:src\\main\\java\\ru\\gb\\HomeWorks_core3\\lesson2\\students.db");
         statement = connection.createStatement();
     }
 
