@@ -17,30 +17,30 @@ public class NewHomeWorkApp {
         System.out.println(check5(2022));
     }
 
-    public static boolean check1 (int a, int b){
+    public static boolean check1(int a, int b) {
         return (a + b) > 10 && (a + b) <= 20;
     }
 
-    public static void check2 (int a){
-        if (a < 0){
+    public static void check2(int a) {
+        if (a < 0) {
             System.out.println("Число отрицательное");
         } else {
             System.out.println("Число положительное");
         }
     }
 
-    public static boolean check3 (int a){
+    public static boolean check3(int a) {
         return a < 0;
     }
 
-    public static void check4(String str, int a){
+    public static void check4(String str, int a) {
         for (int i = 0; i < a; i++) {
             System.out.println(str);
         }
     }
 
-    public static boolean check5 (int year){
-        if (year % 400 == 0){
+    public static boolean check5(int year) {
+        if (year % 400 == 0) {
             return true;
         } else if (year % 100 == 0) {
             return false;
