@@ -4,9 +4,9 @@ import java.util.concurrent.CyclicBarrier;
 
 public class MainClass {
     public static final int CARS_COUNT = 4;
-    public boolean start = false;
-    Runnable setStart = () -> start = true;
-    public CyclicBarrier barrier = new CyclicBarrier(CARS_COUNT, setStart);
+    public static volatile boolean start = false;
+    public static volatile boolean finish = false;
+    public static volatile Car winner = null;
 
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
@@ -19,15 +19,19 @@ public class MainClass {
             new Thread(cars[i]).start();
         }
 
-//        while (true){
-////            System.out.println(barrier.getNumberWaiting() + " " + barrier.isBroken());
-//            if (barrier.isBroken()){
-//                break;
-//            }
-//        }
+        while (!start) {
+            Thread.onSpinWait();
+        }
 
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
+
+        while (!finish) {
+            Thread.onSpinWait();
+        }
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
+        System.out.println("--- ОБЬЯВЛЕНИЕ ПОБЕДИТЕЛЯ ---");
+        System.out.println("Победителем стал: " + winner.getName());
+        System.out.println("Рекордная скорость трассы: " + winner.getSpeed() + "км/ч.");
     }
 
 }

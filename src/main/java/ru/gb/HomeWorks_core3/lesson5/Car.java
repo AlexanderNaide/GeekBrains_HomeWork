@@ -1,10 +1,20 @@
 package ru.gb.HomeWorks_core3.lesson5;
 
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 public class Car implements Runnable {
     private static int CARS_COUNT;
-    private CyclicBarrier barrier;
+    private static CyclicBarrier cyclicBarrierStart;
+    private static CyclicBarrier cyclicBarrierFinish;
+
+    Runnable setStart = () -> {
+        MainClass.start = true;
+    };
+
+    Runnable setFinish = () -> {
+        MainClass.finish = true;
+    };
     static {
         CARS_COUNT = 0;
     }
@@ -22,6 +32,8 @@ public class Car implements Runnable {
         this.speed = speed;
         CARS_COUNT++;
         this.name = "Участник #" + CARS_COUNT;
+        cyclicBarrierStart = new CyclicBarrier(MainClass.CARS_COUNT, setStart);
+        cyclicBarrierFinish = new CyclicBarrier(MainClass.CARS_COUNT, setFinish);
     }
     @Override
     public void run() {
@@ -29,14 +41,21 @@ public class Car implements Runnable {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
             System.out.println(this.name + " готов");
-            System.out.println(barrier.getParties() + " / " + barrier.getNumberWaiting() + " / " + barrier.isBroken());
-            barrier.await();
-            System.out.println(barrier.getParties() + " / " + barrier.getNumberWaiting() + " / " + barrier.isBroken());
+            cyclicBarrierStart.await();
         } catch (Exception e) {
             e.printStackTrace();
         }
         for (int i = 0; i < race.getStages().size(); i++) {
             race.getStages().get(i).go(this);
+        }
+        if (MainClass.winner == null){
+            MainClass.winner = this;
+            System.out.println(name + " - WIN");
+        }
+        try {
+            cyclicBarrierFinish.await();
+        } catch (InterruptedException | BrokenBarrierException e) {
+            throw new RuntimeException(e);
         }
     }
 }
