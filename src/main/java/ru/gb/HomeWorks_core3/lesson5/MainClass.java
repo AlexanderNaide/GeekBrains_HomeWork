@@ -1,12 +1,8 @@
 package ru.gb.HomeWorks_core3.lesson5;
 
-import java.util.concurrent.CyclicBarrier;
-
 public class MainClass {
     public static final int CARS_COUNT = 4;
-    public static volatile boolean start = false;
-    public static volatile boolean finish = false;
-    public static volatile Car winner = null;
+    public static Car winner = null;
 
     public static void main(String[] args) {
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
@@ -19,14 +15,18 @@ public class MainClass {
             new Thread(cars[i]).start();
         }
 
-        while (!start) {
-            Thread.onSpinWait();
+        try {
+            Car.countStart.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
 
-        while (!finish) {
-            Thread.onSpinWait();
+        try {
+            Car.countFinish.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
         System.out.println("--- ОБЬЯВЛЕНИЕ ПОБЕДИТЕЛЯ ---");
