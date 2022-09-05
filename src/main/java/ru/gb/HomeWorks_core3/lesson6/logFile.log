@@ -1,0 +1,5 @@
+INFO  2022-09-05 16:20:30 [main] ru.gb.HomeWorks_core3.lesson6.HomeWorkApp (HomeWorkApp.java:28) - Info
+DEBUG 2022-09-05 16:20:30 [main] ru.gb.HomeWorks_core3.lesson6.HomeWorkApp (HomeWorkApp.java:31) - Debug
+INFO  2022-09-05 16:20:30 [main] ru.gb.HomeWorks_core3.lesson6.HomeWorkApp (HomeWorkApp.java:34) - Info message (Insert message
+WARN  2022-09-05 16:20:30 [main] ru.gb.HomeWorks_core3.lesson6.HomeWorkApp (HomeWorkApp.java:35) - Warning
+ERROR 2022-09-05 16:20:30 [main] ru.gb.HomeWorks_core3.lesson6.HomeWorkApp (HomeWorkApp.java:36) - Error
