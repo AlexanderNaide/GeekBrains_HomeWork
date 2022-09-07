@@ -5,9 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 //import org.apache.logging.log4j.core.Logger;
 
-import java.util.logging.Formatter;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
+import java.util.Arrays;
 //import java.util.logging.Logger;
 
 public class HomeWorkApp {
@@ -36,6 +34,14 @@ public class HomeWorkApp {
         logger.error("Error");
 
 
+        HomeWork6 homeWork6 = new HomeWork6();
+        Integer[] integers = homeWork6.arrayAfterFour(new Integer[]{1, 2, 4, 4, 2, 3, 4, 1, 7});
+        System.out.println(Arrays.toString(integers));
+
+        System.out.println(homeWork6.containsOneAndFour(new Integer[]{1, 1, 4, 4, 1, 4, 4, 1, 4}));
+        System.out.println(homeWork6.containsOneAndFour(new Integer[]{1, 1}));
+        System.out.println(homeWork6.containsOneAndFour(new Integer[]{4, 4}));
+        System.out.println(homeWork6.containsOneAndFour(new Integer[]{4, 1, 7}));
 
     }
 }
