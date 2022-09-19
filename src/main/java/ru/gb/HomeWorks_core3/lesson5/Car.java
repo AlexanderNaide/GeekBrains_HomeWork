@@ -1,20 +1,14 @@
 package ru.gb.HomeWorks_core3.lesson5;
 
-import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 public class Car implements Runnable {
     private static int CARS_COUNT;
-    private static CyclicBarrier cyclicBarrierStart;
-    private static CyclicBarrier cyclicBarrierFinish;
+    private static volatile CyclicBarrier cyclicBarrierStart;
+    public static volatile CountDownLatch countStart;
+    public static volatile CountDownLatch countFinish;
 
-    Runnable setStart = () -> {
-        MainClass.start = true;
-    };
-
-    Runnable setFinish = () -> {
-        MainClass.finish = true;
-    };
     static {
         CARS_COUNT = 0;
     }
@@ -32,8 +26,9 @@ public class Car implements Runnable {
         this.speed = speed;
         CARS_COUNT++;
         this.name = "Участник #" + CARS_COUNT;
-        cyclicBarrierStart = new CyclicBarrier(MainClass.CARS_COUNT, setStart);
-        cyclicBarrierFinish = new CyclicBarrier(MainClass.CARS_COUNT, setFinish);
+        cyclicBarrierStart = new CyclicBarrier(MainClass.CARS_COUNT);
+        countStart = new CountDownLatch(MainClass.CARS_COUNT);
+        countFinish = new CountDownLatch(MainClass.CARS_COUNT);
     }
     @Override
     public void run() {
@@ -41,6 +36,7 @@ public class Car implements Runnable {
             System.out.println(this.name + " готовится");
             Thread.sleep(500 + (int)(Math.random() * 800));
             System.out.println(this.name + " готов");
+            countStart.countDown();
             cyclicBarrierStart.await();
         } catch (Exception e) {
             e.printStackTrace();
@@ -52,10 +48,6 @@ public class Car implements Runnable {
             MainClass.winner = this;
             System.out.println(name + " - WIN");
         }
-        try {
-            cyclicBarrierFinish.await();
-        } catch (InterruptedException | BrokenBarrierException e) {
-            throw new RuntimeException(e);
-        }
+        countFinish.countDown();
     }
 }
