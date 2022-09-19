@@ -31,6 +31,25 @@ public class HomeWorkApp {
         }
 
         try {
+
+            statement.execute("CREATE TABLE IF NOT EXISTS shorts (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "name TEXT," +
+                    "score INTEGER)");
+
+/*
+            for (int i = 0; i < 10; i++) {
+                String name = String.format("Alex_%d", i);
+                statement.execute(String.format("INSERT INTO shorts (name, score) VALUES ('%s', %d)", name, i * 18));
+            }
+*/
+
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM shorts");
+            while(resultSet.next()) {
+                System.out.println(resultSet.getInt(1) + " " + resultSet.getString("name") + " " + resultSet.getString(3));
+            }
+
+
             //Добавить единичную строку
 //            statement.execute("INSERT INTO students (id, name, score) VALUES (1, 'Alex', 4)");
 
@@ -43,11 +62,11 @@ public class HomeWorkApp {
             //Удаление таблицы с проверкой, если такая существуюет
 //            statement.execute("drop table if exists students");
 
-            //Сщздание таблицы с проверкой, если такой не существует. добавление столбцов id, name, score. Добавление автоинкремента в id
-/*            statement.execute("CREATE TABLE IF NOT EXISTS students (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "name TEXT," +
-                    "score INTEGER)");*/
+            //Создание таблицы с проверкой, если такой не существует. добавление столбцов id, name, score. Добавление автоинкремента в id
+//            statement.execute("CREATE TABLE IF NOT EXISTS students (" +
+//                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+//                    "name TEXT," +
+//                    "score INTEGER)");
 
 
 
@@ -87,7 +106,7 @@ public class HomeWorkApp {
 
 
             //комплексное добавление записей в таблицу
-            long time = System.currentTimeMillis();
+/*            long time = System.currentTimeMillis();
             connection.setAutoCommit(false);
             for (int i = 0; i < 500; i++) {
                 String name = String.format("Alex_%d", i);
@@ -97,7 +116,7 @@ public class HomeWorkApp {
 
             statement.executeBatch();
             connection.setAutoCommit(true);
-            System.out.println(System.currentTimeMillis() - time);
+            System.out.println(System.currentTimeMillis() - time);*/
 
 
 
@@ -118,6 +137,7 @@ public class HomeWorkApp {
 //        connection = DriverManager.getConnection("jdbc:sqlite:C:\\Java\\GeekBrains_HomeWork\\src\\main\\java\\ru\\gb\\HomeWorks_core3\\lesson2\\students.db");
         connection = DriverManager.getConnection("jdbc:sqlite:src\\main\\java\\ru\\gb\\HomeWorks_core3\\lesson2\\students.db");
         statement = connection.createStatement();
+        DatabaseMetaData db = connection.getMetaData();
     }
 
     private static void disconnect() throws SQLException {

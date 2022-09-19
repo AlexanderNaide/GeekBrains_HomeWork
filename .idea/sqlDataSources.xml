@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="238b093e-6d8a-4671-8dbe-38c5e939ac6c" name="geodata@localhost Mapping">
+      <data-sources db="a8d642eb-bfad-4a8a-9d8d-d034d252d7c5" ddl="342ef14c-7401-49f3-abbf-fe1e98af79fc" />
+      <scope>
+        <node kind="schema" qname="geodata" />
+      </scope>
+    </mapping>
+  </component>
+</project>
