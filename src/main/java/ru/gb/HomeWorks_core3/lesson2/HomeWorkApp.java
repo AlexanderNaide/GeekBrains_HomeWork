@@ -43,6 +43,7 @@ public class HomeWorkApp {
                 statement.execute(String.format("INSERT INTO shorts (name, score) VALUES ('%s', %d)", name, i * 18));
             }
 */
+            statement.executeUpdate(String.format("INSERT INTO shorts (name, score) VALUES ('%s', %d)", "Vova", (99 * 18)));
 
             ResultSet resultSet = statement.executeQuery("SELECT * FROM shorts");
             while(resultSet.next()) {
