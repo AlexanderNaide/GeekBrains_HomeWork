@@ -6,7 +6,11 @@
 
     <groupId>ru.gb</groupId>
     <artifactId>GeekBrains_HomeWork</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>JavaEE_and_SPRING</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
