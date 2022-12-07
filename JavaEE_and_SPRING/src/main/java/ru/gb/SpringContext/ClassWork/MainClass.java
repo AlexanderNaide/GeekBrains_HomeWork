@@ -5,7 +5,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class MainClass {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("ru.gb.SpringContext");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("ru.gb.SpringContext.ClassWork");
 
 /*            Box box1 = context.getBean(Box.class);
             Box box2 = context.getBean(Box.class);
