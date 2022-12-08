@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/JavaEE_and_SPRING" />
+    <file type="web" url="file://$PROJECT_DIR$/JavaEE" />
+    <file type="web" url="file://$PROJECT_DIR$/SPRING" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
