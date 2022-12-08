@@ -29,6 +29,22 @@ public class GetProducts extends HttpServlet {
 
         out.printf("<html><body>");
 
+        list.forEach(p -> {
+            System.out.println(p.getId() + " " + p.getTitle());
+        });
+
+/*        String[] split = "Cart add edd".split(" ");
+        switch (split[0]){
+            case "cart" -> System.out.println("fjfjj");
+
+            case "add" -> {
+            }
+            case "remove" -> {
+            }
+            case "all" -> {
+            }
+        }*/
+
         for (Product product : list) {
             out.printf("<h1>");
             out.printf(String.format("Товар %04d: %s, цена: %.2f", product.getId(), product.getTitle(), product.getCost()));
