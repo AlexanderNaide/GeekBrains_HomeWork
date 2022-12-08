@@ -11,5 +11,8 @@
         <module name="SPRING" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="JavaEE_and_SPRING" target="19" />
+    </bytecodeTargetLevel>
   </component>
 </project>
