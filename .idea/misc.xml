@@ -4,11 +4,13 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/JavaEE" />
     <file type="web" url="file://$PROJECT_DIR$/SPRING" />
+    <file type="web" url="file://$PROJECT_DIR$/Spring-MVC" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/Spring-MVC/pom.xml" />
       </list>
     </option>
   </component>

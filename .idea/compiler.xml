@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Spring-MVC" />
         <module name="JavaEE" />
         <module name="SPRING" />
       </profile>
@@ -14,5 +15,10 @@
     <bytecodeTargetLevel>
       <module name="JavaEE_and_SPRING" target="19" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Spring-MVC" options="-parameters" />
+    </option>
   </component>
 </project>
