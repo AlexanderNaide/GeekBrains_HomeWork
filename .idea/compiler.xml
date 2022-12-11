@@ -18,6 +18,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="JavaEE" options="-parameters" />
+      <module name="SPRING" options="-parameters" />
       <module name="Spring-MVC" options="-parameters" />
     </option>
   </component>
